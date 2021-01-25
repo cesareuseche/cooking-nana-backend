@@ -56,6 +56,15 @@ $ pipenv run migrate (to create the database)
 $ pipenv run start (to start the flask webserver)
 ```
 
+# Launch using docker
+
+1. ⚠️ If you don't have docker installed on your computer, please go [get docker](https://docs.docker.com/get-docker/)
+2. ⚠️ If on linux, install docker-compose following [these instructions](https://docs.docker.com/compose/install/)
+3. Clone the repo and create a `.env` file; complete key-value pairs as proposed on `.env.example` file
+4. Run `docker-compose up` and give it a few minutes
+5. Have some coffee
+6. Your mysql service should be up on port 33060 (from host, a.k.a. your OS)
+7. Your api service should be up on port 3000 (from host, also your OS)
 
 ## Deploy to Heroku
 
