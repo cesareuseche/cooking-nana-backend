@@ -65,6 +65,9 @@ $ pipenv run start (to start the flask webserver)
 5. Have some coffee (Really large coffee)
 6. Your mysql service should be up on port 33060 (from host, a.k.a. your OS)
 7. Your api service should be up on port 3000 (from host, also your OS)
+8. Go to Docker Desktop, run flask-rest-hello and run cli
+9. Run on terminal: `mysql`
+10. Now you can use commands as: `show databases;`   `use example;`   `show tables;`
 
 ## Deploy to Heroku
 
