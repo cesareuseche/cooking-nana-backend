@@ -62,7 +62,7 @@ $ pipenv run start (to start the flask webserver)
 2. ⚠️ If on linux, install docker-compose following [these instructions](https://docs.docker.com/compose/install/)
 3. Clone the repo and create a `.env` file; complete key-value pairs as proposed on `.env.example` file
 4. Run `docker-compose up` and give it a few minutes
-5. Have some coffee
+5. Have some coffee (Really large coffee)
 6. Your mysql service should be up on port 33060 (from host, a.k.a. your OS)
 7. Your api service should be up on port 3000 (from host, also your OS)
 
