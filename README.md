@@ -88,8 +88,8 @@ $ git push heroku master
 
 ## Implementing changes in database
 
-`pipenv run migrate` to implement change on Database tables at models.py to folder Migration
-`pipenv run upgrade` to update database with changes.
+1. `pipenv run migrate` to implement change on Database tables at models.py to folder Migration
+2. `pipenv run upgrade` to update database with changes.
 
 ## To solve FATAL ERROR on pre-production
 
