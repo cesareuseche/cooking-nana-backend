@@ -63,6 +63,7 @@ $ pipenv run start (to start the flask webserver)
 3. Clone the repo and create a `.env` file; complete key-value pairs as proposed on `.env.example` file
 4. Run `docker-compose up` and give it a few minutes
 5. Have some coffee (Really large coffee)
+5.1 Delete Migration
 6. Your mysql service should be up on port 33060 (from host, a.k.a. your OS)
 7. Your api service should be up on port 3000 (from host, also your OS)
 8. Go to Docker Desktop, run flask-rest-hello and run cli
@@ -84,3 +85,19 @@ $ heroku create <your_application_name>
 $ git push heroku master
 ```
 :warning: For a more detailed explanation on working with .env variables or the MySQL database [read the full guide](https://github.com/4GeeksAcademy/flask-rest-hello/blob/master/docs/DEPLOY_YOUR_APP.md).
+
+## Implementing changes in database
+
+`pipenv run migrate` to implement change on Database tables at models.py to folder Migration
+`pipenv run upgrade` to update database with changes.
+
+## To solve FATAL ERROR on pre-production
+
+1. Just eliminate folder migration.
+2.1 For docker users only have to use `docker-compose up --build`
+2.2 Go to project in docker and run terminal `pipenv run init` `pipenv run migrate` `pipenv run upgrade`, then open mysql terminal on docker and run: `drop database example;` and `create database example;` 
+
+## To solve FATAL ERROR on final production
+
+1. Try to save database, DO NOT delete migration folder
+2. Read /docs
