@@ -40,7 +40,7 @@ def handle_hello_users():
     return jsonify(response_body), 200    
 
 #se crea el decorador humans, el cuál deberá validar los métodos get, put, patch, delete
-@app.route('/humans', methods=['GET'])
+@app.route('/human', methods=['GET'])
 def handle_hello():
     humans = Human.query.all()
     response_body = []
