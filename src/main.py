@@ -79,7 +79,7 @@ def add_new_contact():
         raise APIException('You need to specify the phone', status_code=400)
 
     # at this point, all data has been validated, we can proceed to inster into the bd
-    user1 = Person(full_name=body['full_name'], email=body['email'], gender=['gender'], password=['password'], is_active=['is_active'], phone=['phone'])
+    user1 = contact(full_name=body['full_name'], email=body['email'], gender=['gender'], password=['password'], is_active=['is_active'], phone=['phone'])
     db.session.add(user1)
     db.session.commit()
     return "ok", 200
