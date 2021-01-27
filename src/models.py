@@ -4,7 +4,7 @@ db = SQLAlchemy()
 
 class Contact(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    full_name= db.Column(db.String(120), unique=True, nullable=False)
+    full_name= db.Column(db.String(120), unique=False, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     gender = db.Column(db.String(10), unique=False, nullable=False)
     password = db.Column(db.String(80), unique=False, nullable=False)
