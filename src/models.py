@@ -7,7 +7,6 @@ class Contact(db.Model):
     full_name= db.Column(db.String(120), unique=False, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     gender = db.Column(db.String(10), unique=False, nullable=False)
-    password = db.Column(db.String(80), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
     phone = db.Column(db.String(40), unique=True, nullable=False)
 
