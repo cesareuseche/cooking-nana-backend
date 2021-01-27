@@ -94,8 +94,8 @@ $ git push heroku master
 ## To solve FATAL ERROR on pre-production
 
 1. Just eliminate folder migration.
-2.1 For docker users only have to use `docker-compose up --build`
-2.2 Go to project in docker and run terminal `pipenv run init` `pipenv run migrate` `pipenv run upgrade`, then open mysql terminal on docker and run: `drop database example;` and `create database example;` 
+2. 1. For docker users only have to use `docker-compose up --build`
+2. 2. Go to project in docker and run terminal `pipenv run init` `pipenv run migrate` `pipenv run upgrade`, then open mysql terminal on docker and run: `drop database example;` and `create database example;` 
 
 ## To solve FATAL ERROR on final production
 
