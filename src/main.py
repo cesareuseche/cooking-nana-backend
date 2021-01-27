@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, Human, User
+from models import db, Contact
 #from models import Person
 
 app = Flask(__name__)
@@ -30,24 +30,31 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
-@app.route('/user', methods=['GET'])
+@app.route('/contact', methods=['GET'])
 def handle_hello_users():
-    users = User.query.all()
+    contacts = Contact.query.all()
     response_body = []
-    for user in users:
-        response_body.append(user.serialize())
+    for contact in contacts:
+        response_body.append(contact.serialize())
 
     return jsonify(response_body), 200    
 
-#se crea el decorador humans, el cuál deberá validar los métodos get, put, patch, delete
-@app.route('/human', methods=['GET'])
-def handle_hello():
-    humans = Human.query.all()
-    response_body = []
-    for human in humans:
-        response_body.append(human.serialize())
+@app.route('/contact', methods=['POST']) #debería recibir una lista de diccionarios
+def add_new_contact():
+    request_body = request.data
+    decoded_object = json.loads(request_body)
+    print("Incoming request with the following body", request_body)
+    if isinstance(decoded_object, list):
+        for info in decoded_object:
+            contact.append(info)
+    elif isinstance(decoded_object, dict):
+        contact.append(info)
+    else:
+        return "Error 400"
+    #return 'Response for the POST todo'
+    return jsonify(contact)
 
-    return jsonify(response_body), 200
+#se crea el decorador humans, el cuál deberá validar los métodos get, put, patch, delete
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
