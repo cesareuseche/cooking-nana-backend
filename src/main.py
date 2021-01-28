@@ -64,8 +64,7 @@ def handle_hello_users():
 
 ########## Forma 2 de crear el Post con Validación de data#############################
 @app.route('/contact', methods=['POST'])
-def add_new_contact():
-
+def handle_contact():
     # First we get the payload json
     body = request.get_json()
     if isinstance(body, dict):
@@ -77,18 +76,29 @@ def add_new_contact():
             raise APIException('You need to specify the email', status_code=400)
         if 'gender' not in body:
             raise APIException('You need to specify the gender', status_code=400)
-        if 'is_active' not in body:
-            raise APIException('You need to specify the is_active', status_code=400)
         if 'phone' not in body:
             raise APIException('You need to specify the phone', status_code=400)
-    else:
-        return "no se un diccionario", 400        
+    else: return "no es un diccionario", 400        
     # at this point, all data has been validated, we can proceed to inster into the bd
-    contact1 = Contact(full_name=body['full_name'], email=body['email'], gender=['gender'], is_active=['is_active'], phone=['phone'])
+    contact1 = Contact(email=body['email'], gender = body['gender'],  phone =body['phone'], full_name =body['full_name'] )
     db.session.add(contact1)
     db.session.commit()
     return "ok", 200
 ######################################################################################
+
+@app.route('/contact/<int:position>', methods=['DELETE'])
+def delete_contact(position):
+    contact_to_delete= Contact.query.get_or_404(position)
+    db.session.delete(contact_to_delete)
+    contact_to_delete.deleted = True 
+    db.session.commit()
+    return "borrado", 204
+
+# @app.route('/contacts/<int:position>',methods=['DELETE']) 
+# def delete_contact(position):     
+#     db.session.delete(Contact.query.get(position))     
+#     db.session.commit()     
+#     return 'borrado', 204  
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
