@@ -100,6 +100,65 @@ def delete_contact(position):
 #     db.session.commit()     
 #     return 'borrado', 204  
 
+
+@app.route('/contact/<int:position>', methods=['GET'])
+def handle_hello_users_for_id(position):
+    contact = Contact.query.get(position)
+    if contact is None:
+        return "This contact doesn't exist", 404
+    else:
+        return jsonify(contact.serialize()),200
+
+
+@app.route('/contact/<int:position>', methods=['PUT'])
+def update_contact(position):
+    # First we get the payload json
+    body = request.get_json()
+    if isinstance(body, dict):
+        if body is None:
+            raise APIException("You need to specify the request body as a json object", status_code=400)
+        if 'full_name' not in body:
+            raise APIException('You need to specify the full_name', status_code=400)
+        if 'email' not in body:
+            raise APIException('You need to specify the email', status_code=400)
+        if 'gender' not in body:
+            raise APIException('You need to specify the gender', status_code=400)
+        if 'phone' not in body:
+            raise APIException('You need to specify the phone', status_code=400)
+    else: return "no es un diccionario", 400        
+    # at this point, all data has been validated, we can proceed to inster into the bd
+    Contact.query.filter(Contact.id == position).update(({
+        'email': body['email'],
+        "full_name": body['full_name'],
+        "phone": body['phone'],
+        "gender": body['gender']
+    })) 
+    
+    db.session.commit()
+    return "ok", 200
+
+@app.route('/contact/<int:position>', methods=['PATCH'])
+def update_contact_property(position):
+    body = request.get_json()
+    contact_to_update = Contact.query.get(position)
+    if contact_to_update is None:
+        raise APIException("You need to specify the contact property", status_code=400)
+    if 'full_name' != None:
+        new_full_name = body['full_name']
+        contact_to_update.full_name = new_full_name
+    if 'email' != None:
+        new_email = body['email']
+        contact_to_update.email = new_email
+    if 'gender' != None:
+        new_gender = body['gender']
+        contact_to_update.gender = new_gender
+    if 'phone' != None:
+        new_phone = body['phone']
+        contact_to_update.phone = new_phone    
+
+    db.session.commit()
+    return "Properties updated", 200
+
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))
