@@ -27,7 +27,7 @@ services:
         volumes:
             - ./:/app
         ports:
-            - 3000:3000
+            - 8080:8080
         working_dir: /app
         entrypoint: ["/bin/sh", "./wait_for_db.sh"]
 volumes:
