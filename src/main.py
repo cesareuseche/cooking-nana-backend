@@ -51,13 +51,10 @@ def handle_contact():
             raise APIException('You need to specify the full_name', status_code=400)
         if 'email' not in body:
             raise APIException('You need to specify the email', status_code=400)
-        if 'gender' not in body:
-            raise APIException('You need to specify the gender', status_code=400)
-        if 'phone' not in body:
-            raise APIException('You need to specify the phone', status_code=400)
+    
     else: return "no es un diccionario", 400        
     # at this point, all data has been validated, we can proceed to inster into the bd
-    contact1 = Contact(email=body['email'], gender = body['gender'],  phone =body['phone'], full_name =body['full_name'] )
+    contact1 = Contact(email=body['email'], full_name =body['full_name'] )
     db.session.add(contact1)
     db.session.commit()
     return "ok", 200
@@ -91,17 +88,12 @@ def update_contact(position):
             raise APIException('You need to specify the full_name', status_code=400)
         if 'email' not in body:
             raise APIException('You need to specify the email', status_code=400)
-        if 'gender' not in body:
-            raise APIException('You need to specify the gender', status_code=400)
-        if 'phone' not in body:
-            raise APIException('You need to specify the phone', status_code=400)
+        
     else: return "no es un diccionario", 400        
     # at this point, all data has been validated, we can proceed to inster into the bd
     Contact.query.filter(Contact.id == position).update(({
         'email': body['email'],
-        "full_name": body['full_name'],
-        "phone": body['phone'],
-        "gender": body['gender']
+        "full_name": body['full_name']
     })) 
     
     db.session.commit()
@@ -119,12 +111,6 @@ def update_contact_property(position):
     if 'email' != None:
         new_email = body['email']
         contact_to_update.email = new_email
-    if 'gender' != None:
-        new_gender = body['gender']
-        contact_to_update.gender = new_gender
-    if 'phone' != None:
-        new_phone = body['phone']
-        contact_to_update.phone = new_phone    
 
     db.session.commit()
     return "Properties updated", 200
