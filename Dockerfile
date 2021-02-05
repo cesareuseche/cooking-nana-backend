@@ -11,4 +11,4 @@ RUN pip install pipenv
 RUN pipenv install
 
 COPY . /app/
-EXPOSE 3000
+EXPOSE 8080
