@@ -39,29 +39,6 @@ def handle_hello_users():
 
     return jsonify(response_body), 200    
 
-############# forma 1 de declarar el método post pero sin validación de data#################
-# @app.route('/contact', methods=['POST']) #debería recibir una lista de diccionarios
-# def add_new_contact():
-#     request_body = request.data
-#     decoded_object = json.loads(request_body)
-#     i=0
-#     contact=[]
-#     print("Incoming request with the following body", request_body)
-#     if isinstance(decoded_object, list):
-#         for i in decoded_object:
-#             contact.append(i)
-#             db.session.add(contact(i))
-#             db.session.commit()
-#     elif isinstance(decoded_object, dict):
-#         contact.append(i)
-#         db.session.add(contact)
-#         db.session.commit()
-#     else:
-#         return "Error 400"
-#     #return 'Response for the POST todo'
-#     return jsonify(contact)
-#####################################################################################
-
 ########## Forma 2 de crear el Post con Validación de data#############################
 @app.route('/contact', methods=['POST'])
 def handle_contact():
@@ -93,13 +70,6 @@ def delete_contact(position):
     contact_to_delete.deleted = True 
     db.session.commit()
     return "borrado", 204
-
-# @app.route('/contacts/<int:position>',methods=['DELETE']) 
-# def delete_contact(position):     
-#     db.session.delete(Contact.query.get(position))     
-#     db.session.commit()     
-#     return 'borrado', 204  
-
 
 @app.route('/contact/<int:position>', methods=['GET'])
 def handle_hello_users_for_id(position):
