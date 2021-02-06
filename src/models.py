@@ -25,7 +25,7 @@ class Contact(db.Model):
 
     #aca va el relationship con otra tabla del tipo many-to many
 
-    def __init__(self, email, name, last_name, ludos, username, password, status):
+    def __init__(self, email, name, last_name, username, password, status):
         self.email = email
         self.name = name
         self.last_name = last_name
