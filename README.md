@@ -19,6 +19,8 @@
 
 The following steps are automatically runned withing gitpod, if you are doing a local installation you have to do them manually:
 
+-Need to install: `python3 -m pip install flask-jwt-simple`
+
 ```sh
 pipenv install;
 mysql -u root -e "CREATE DATABASE example";

@@ -1,7 +1,7 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-import os
+import os, threading
 from flask import Flask, request, jsonify, url_for
 from flask_migrate import Migrate
 from flask_swagger import swagger
@@ -9,14 +9,18 @@ from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
 from models import db, Contact#, Recipe, Ingredient
-
+from flask_jwt_simple import (
+JWTManager, jwt_required, create_jwt, get_jwt_identity
+)
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_CONNECTION_STRING')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['JWT_SECRET_KEY'] = os.environ.get("APP_JWT_SECRET")
 MIGRATE = Migrate(app, db)
 db.init_app(app)
+jwt = JWTManager(app) #JSON web tokens para autenticación en el servidor
 CORS(app)
 setup_admin(app)
 
@@ -30,90 +34,151 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
+#A diferencia de obtener una lista de contactos
+#ahora la meta es verificar cada usuario que hace login de 
+#manera individual coincida su password con username
 @app.route('/contact', methods=['GET'])
-def handle_hello_users():
-    contacts = Contact.query.all()
-    response_body = []
-    for contact in contacts:
-        response_body.append(contact.serialize())
-
-    return jsonify(response_body), 200    
-
-########## Forma 2 de crear el Post con Validación de data#############################
-@app.route('/contact', methods=['POST'])
-def handle_contact():
-    # First we get the payload json
-    body = request.get_json()
-    if isinstance(body, dict):
-        if body is None:
-            raise APIException("You need to specify the request body as a json object", status_code=400)
-        if 'full_name' not in body:
-            raise APIException('You need to specify the full_name', status_code=400)
-        if 'email' not in body:
-            raise APIException('You need to specify the email', status_code=400)
-    
-    else: return "no es un diccionario", 400        
-    # at this point, all data has been validated, we can proceed to inster into the bd
-    contact1 = Contact(email=body['email'], full_name =body['full_name'] )
-    db.session.add(contact1)
-    db.session.commit()
-    return "ok", 200
-######################################################################################
-
-@app.route('/contact/<int:position>', methods=['DELETE'])
-def delete_contact(position):
-    contact_to_delete= Contact.query.get_or_404(position)
-    db.session.delete(contact_to_delete)
-    contact_to_delete.deleted = True 
-    db.session.commit()
-    return "borrado", 204
-
-@app.route('/contact/<int:position>', methods=['GET'])
-def handle_hello_users_for_id(position):
-    contact = Contact.query.get(position)
-    if contact is None:
-        return "This contact doesn't exist", 404
+@jwt_required
+def get_user():
+    user = Contact.query.get(get_jwt_identity()) #parecido al query.all() pero con la finalidad de obtener los tokens jwt
+    #response_body = [] #No es necesario porque no se obtendrá una lista de usuarios
+    if isinstance(user, Contact):
+        return jsonify(user.serialize())
     else:
-        return jsonify(contact.serialize()),200
+        return jsonify({
+            "result": "user doesn't exist"
+        }),400
 
+#Por otro lado, si como administradores quisieramos obtener
+#toda la lista de usuarios en la base de datos, haríamos
+#otro método Get con un nuevo end-point.
+@app.route('/contacts', methods=['GET'])
+def get_users():
+    """ buscar y regresar todos los usuarios """
+    users = Contact.query.all()
+    users_serialize = list(map(lambda user: user.serializeUsers(), users)) #serializeUser() se definició como función dentro de la clase Contact
+    return jsonify(users_serialize), 200
 
-@app.route('/contact/<int:position>', methods=['PUT'])
-def update_contact(position):
-    # First we get the payload json
-    body = request.get_json()
-    if isinstance(body, dict):
-        if body is None:
-            raise APIException("You need to specify the request body as a json object", status_code=400)
-        if 'full_name' not in body:
-            raise APIException('You need to specify the full_name', status_code=400)
-        if 'email' not in body:
-            raise APIException('You need to specify the email', status_code=400)
+#Otra cosa que podríamos querer es 
+#la información de un usuario en particular
+@app.route('/contact/<user_id>', methods=['GET'])
+def get_user_id(user_id):
+    """ buscar y regresar un usuario en especifico """
+    user = Contact.query.get(user_id)
+    if isinstance(user, Contact):
+        return jsonify(user.serialize()), 200
+    else:
+        return jsonify({
+            "result": "user not found"
+        }), 404
+
+#La forma de registrar al usuario debe ser con un método
+#POST con un end-point relacionado con el front-end
+#como por ejemplo el end-point /register
+@app.route('/register', methods=['POST'])
+def post_user():
+    """
+        "POST": registrar un usuario y devolverlo
+    """
+    body = request.json
+    if body is None:
+        return jsonify({
+            "response": "empty body"
+        }), 400
+
+    if (
+        "email" not in body or
+        "name" not in body or
+        "last_name" not in body or
+        "username" not in body or
+        "password" not in body 
+    ):
+        return jsonify({
+            "response": "Missing properties"
+        }), 400
+    if(
+        body["email"] == "" or
+        body["name"] == "" or
+        body["last_name"] == "" or
+        body["username"] == "" or
+        body["password"] == ""
+    ):
+        return jsonify({
+            "response": "empty property values"
+        }), 400
+
+    new_user = Contact.register(
+        body["email"],
+        body["name"],
+        body["last_name"],
+        body["username"],
+        body["password"],
         
-    else: return "no es un diccionario", 400        
-    # at this point, all data has been validated, we can proceed to inster into the bd
-    Contact.query.filter(Contact.id == position).update(({
-        'email': body['email'],
-        "full_name": body['full_name']
-    })) 
-    
-    db.session.commit()
-    return "ok", 200
+    )
+    db.session.add(new_user)
+    try:
+        db.session.commit()
+        return jsonify(new_user.serialize()), 201
+    except Exception as error:
+        db.session.rollback()
+        print(f"{error.args} {type(error)}")
+        return jsonify({
+            "response": f"{error.args}"
+        }), 500
 
-@app.route('/contact/<int:position>', methods=['PATCH'])
-def update_contact_property(position):
-    body = request.get_json()
-    contact_to_update = Contact.query.get(position)
-    if contact_to_update is None:
-        raise APIException("You need to specify the contact property", status_code=400)
-    if 'full_name' != None:
-        new_full_name = body['full_name']
-        contact_to_update.full_name = new_full_name
-    if 'email' != None:
-        new_email = body['email']
-        contact_to_update.email = new_email
+#Ahora vendría un end-point del tipo POST
+#para cuando el usuario introduce su usuario y password
+@app.route("/login", methods=["POST"])
+def handle_login():
+    """ Compara El usuario/correo con la base de datos y genera un token si hay match """
 
-    db.session.commit()
-    return "Properties updated", 200
+    request_body = request.json
+
+    if request_body is None:
+        return jsonify({
+            "result" : "missing request body"
+
+        }), 400
+
+    if (
+        ("email" not in request_body and "username" not in request_body ) or
+        "password" not in request_body
+    ):
+        return jsonify({
+            "result": "missing fields in request body"
+        }), 400
+
+
+    jwt_identity = ""
+
+    user = None
+
+    if "email" in request_body: 
+        jwt_identity = request_body["email"]
+        user = Contact.query.filter_by(email=request_body["email"]).first()
+    else:
+        jwt_identity = request_body["username"]
+        user = Contact.query.filter_by(username=request_body["username"]).first()
+
+
+    ret = None
+
+    if isinstance(user, Contact):
+        if (user.check_password(request_body["password"])):
+            jwt = create_jwt(identity = user.id)
+            ret = user.serialize()
+            ret["jwt"] = jwt
+        else: 
+            return jsonify({
+                "result": "invalid data"
+            }), 400
+    else:
+        return jsonify({
+                "result": "user not found"
+            }), 404
+                    
+            
+    return jsonify(ret), 200
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
