@@ -8,8 +8,8 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, Contact
-#from models import Person
+from models import db, Contact#, Recipe, Ingredient
+
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False

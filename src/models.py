@@ -1,4 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Column, ForeignKey, Integer, String, Table
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
+from sqlalchemy import create_engine
+#from eralchemy import render_er
 
 db = SQLAlchemy()
 
@@ -6,6 +11,7 @@ class Contact(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     full_name = db.Column(db.String(120), unique=False, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(120), unique=False, nullable=False)
 
     def __repr__(self):
         return '<Contact %r>' % self.id
@@ -18,61 +24,65 @@ class Contact(db.Model):
             # do not serialize the password, its a security breach
         }
 
-class Recipe(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    recipe_name = db.Column(db.String(120), unique=False, nullable=False)
-    description = db.Column(db.String(800), unique=True, nullable=False)
-    img_url = db.Column(db.String(250), unique=True, nullable=False)
-    ingredient_1 = relationship("Ingredient", backref="Recipe")
-    ingredient_2 = relationship("Ingredient", backref="Recipe")
-    ingredient_3 = relationship("Ingredient", backref="Recipe")
-    ingredient_4 = relationship("Ingredient", backref="Recipe")
-    ingredient_5 = relationship("Ingredient", backref="Recipe")
-    ingredient_6 = relationship("Ingredient", backref="Recipe")
-    ingredient_7 = relationship("Ingredient", backref="Recipe")
-    ingredient_8 = relationship("Ingredient", backref="Recipe")
-    ingredient_9 = relationship("Ingredient", backref="Recipe")
-    ingredient_10 = relationship("Ingredient", backref="Recipe")
+#####Recipe e Ingredent tienen una relación directa many-To-many por lo que hay
+#####que usar una clase auxiliar que conecte ambas, de manera que:
+#####la relación entre Recipe y la clase auxiliar sea one-To-many y
+#####la relación entre la tabla auxiliar e Ingredent sea many-To-one.
 
-    def __repr__(self):
-        return '<Recipe %r>' % self.id
+# association_recipe_ingredient = Table('association_recipe_ingredient', db.metadata,
+#     Column('ingredient_id', Integer, ForeignKey('ingredient.id')),
+#     Column('recipe_id', Integer, ForeignKey('recipe.id'))
+# )
 
-    def serialize(self):
-        return {
-            "id": self.id,
-            "description": self.description,
-            "recipe_name": self.recipe_name,
-            "img_url": self.img_url,
-            "ingredient_1": self.ingredient_1,
-            "ingredient_2": self.ingredient_2,
-            "ingredient_3": self.ingredient_3,
-            "ingredient_4": self.ingredient_4,
-            "ingredient_5": self.ingredient_5,
-            "ingredient_6": self.ingredient_6,
-            "ingredient_7": self.ingredient_7,
-            "ingredient_8": self.ingredient_8,
-            "ingredient_9": self.ingredient_9,
-            "ingredient_10": self.ingredient_10,
-            # do not serialize the password, its a security breach
-        }
+# class Recipe(db.Model):
 
-class Ingredient(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name_ingredient = db.Column(db.String(120), unique=False, nullable=True)
-    img_url = db.Column(db.String(250), unique=True, nullable=True)
-    recipe_id = db.Column(Integer, ForeignKey('Recipe.id'))
-    recipe = relationship(Recipe)
+#     #__tablename__ = "recipe"
 
-    def __repr__(self):
-        return '<Recipe %r>' % self.id
+#     id = db.Column(db.Integer, primary_key=True)
+#     recipe_name = db.Column(db.String(120), unique=False, nullable=False)
+#     description = db.Column(db.String(800), unique=True, nullable=False)
+#     img_url = db.Column(db.String(250), unique=True, nullable=False)
+#     tags = db.Column(db.String(250), unique=False, nullable=False)
+#     score= db.Column(db.Integer, unique=False, nullable=False)
+#     ingredient_id = Column(Integer, ForeignKey("ingredient.id"), nullable=False)
+   
 
-    def serialize(self):
-        return {
-            "id": self.id,
-            "description": self.description,
-            "recipe_name": self.recipe_name,
-            "img_url": self.img_url,
-            "ingredients": self.ingredients,
-            "recipe_id": self.recipe_id,
-            # do not serialize the password, its a security breach
-        }
+#     def __repr__(self):
+#         return '<Recipe %r>' % self.id
+
+#     def serialize(self):
+#         return {
+#             "id": self.id,
+#             "description": self.description,
+#             "recipe_name": self.recipe_name,
+#             "img_url": self.img_url,
+#             "tags": self.tags,
+#             "score": self.score,
+#             "ingredient_id": self.ingredient_id,
+            
+            
+#             # do not serialize the password, its a security breach
+#         }
+
+# class Ingredient(db.Model):
+
+#     #__tablename__ = "ingredient"
+
+#     id = db.Column(db.Integer, primary_key=True)
+#     name_ingredient = db.Column(db.String(120), unique=True, nullable=False)
+#     img_url = db.Column(db.String(250), unique=True, nullable=True)
+#     recipe_id = Column(Integer, ForeignKey("recipe.id"), nullable=False)
+#     ingredients = relationship("Recipe", secondary=association_recipe_ingredient)
+
+#     def __repr__(self):
+#         return '<Ingredient %r>' % self.id
+
+#     def serialize(self):
+#         return {
+#             "id": self.id,
+#             "name_ingredient": self.name_ingredient,
+#             "img_url": self.img_url, 
+#             "recipe_id": self.recipe_id,       
+#             #"ingredient_recipe_id": self.ingredient_recipe_id,
+#             # do not serialize the password, its a security breach
+#         }
