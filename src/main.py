@@ -1,7 +1,7 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-import os
+import os, threading
 from flask import Flask, request, jsonify, url_for
 from flask_migrate import Migrate
 from flask_swagger import swagger
@@ -9,14 +9,18 @@ from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
 from models import db, Contact#, Recipe, Ingredient
-
+from flask_jwt_simple import (
+    JWTManager, jwt_required, create_jwt, get_jwt_identity
+)
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_CONNECTION_STRING')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['JWT_SECRET_KEY'] = os.environ.get("APP_JWT_SECRET")
 MIGRATE = Migrate(app, db)
 db.init_app(app)
+jwt = JWTManager(app) #JSON web tokens to verify authorization of our server
 CORS(app)
 setup_admin(app)
 
@@ -30,14 +34,44 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
+#A diferencia de obtener una lista de contactos
+#ahora la meta es verificar cada usuario que hace login de 
+#manera individual
 @app.route('/contact', methods=['GET'])
-def handle_hello_users():
-    contacts = Contact.query.all()
-    response_body = []
-    for contact in contacts:
-        response_body.append(contact.serialize())
+@jwt_required
+def get_user():
+    user = Contact.query.get(get_jwt_identity()) #parecido al query.all() pero con la finalidad de obtener los tokens jwt
+    #response_body = [] #No es necesario porque no se obtendrá una lista de usuarios
+    if isinstance(user, Contact):
+        return jsonify(user.serialize())
+    else:
+        return jsonify({
+            "result": "user doesn't exist"
+        }),400
 
-    return jsonify(response_body), 200    
+#Por otro lado, si como administradores quisieramos obtener
+#toda la lista de usuarios en la base de datos, haríamos
+#otro método Get con un nuevo end-point.
+@app.route('/contacts', methods=['GET'])
+def get_users():
+    """ buscar y regresar todos los usuarios """
+    users = Contact.query.all()
+    users_serialize = list(map(lambda user: user.serializeUsers(), users))
+    return jsonify(users_serialize), 200
+
+#Otra cosa que podríamos querer es 
+#la información de un usuario en particular
+@app.route('/contact/<user_id>', methods=['GET'])
+def get_user_id(user_id):
+    """ buscar y regresar un usuario en especifico """
+    user = Contact.query.get(user_id)
+    if isinstance(user, Contact):
+        return jsonify(user.serialize()), 200
+    else:
+        return jsonify({
+            "result": "user not found"
+        }), 404
+
 
 ########## Forma 2 de crear el Post con Validación de data#############################
 @app.route('/contact', methods=['POST'])
