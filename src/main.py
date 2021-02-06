@@ -10,7 +10,7 @@ from utils import APIException, generate_sitemap
 from admin import setup_admin
 from models import db, Contact#, Recipe, Ingredient
 from flask_jwt_simple import (
-    JWTManager, jwt_required, create_jwt, get_jwt_identity
+JWTManager, jwt_required, create_jwt, get_jwt_identity
 )
 
 app = Flask(__name__)
