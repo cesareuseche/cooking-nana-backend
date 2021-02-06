@@ -20,7 +20,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.environ.get("APP_JWT_SECRET")
 MIGRATE = Migrate(app, db)
 db.init_app(app)
-jwt = JWTManager(app) #JSON web tokens to verify authorization of our server
+jwt = JWTManager(app) #JSON web tokens para autenticación en el servidor
 CORS(app)
 setup_admin(app)
 
