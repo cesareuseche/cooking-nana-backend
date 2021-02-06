@@ -72,82 +72,61 @@ def get_user_id(user_id):
             "result": "user not found"
         }), 404
 
+#La forma de registrar al usuario debe ser con un método
+#POST con un end-point relacionado con el front-end
+#como por ejemplo el end-point /register
+@app.route('/register', methods=['POST'])
+def post_user():
+    """
+        "POST": registrar un usuario y devolverlo
+    """
+    body = request.json
+    if body is None:
+        return jsonify({
+            "response": "empty body"
+        }), 400
 
-########## Forma 2 de crear el Post con Validación de data#############################
-@app.route('/contact', methods=['POST'])
-def handle_contact():
-    # First we get the payload json
-    body = request.get_json()
-    if isinstance(body, dict):
-        if body is None:
-            raise APIException("You need to specify the request body as a json object", status_code=400)
-        if 'full_name' not in body:
-            raise APIException('You need to specify the full_name', status_code=400)
-        if 'email' not in body:
-            raise APIException('You need to specify the email', status_code=400)
-    
-    else: return "no es un diccionario", 400        
-    # at this point, all data has been validated, we can proceed to inster into the bd
-    contact1 = Contact(email=body['email'], full_name =body['full_name'] )
-    db.session.add(contact1)
-    db.session.commit()
-    return "ok", 200
-######################################################################################
+    if (
+        "email" not in body or
+        "name" not in body or
+        "last_name" not in body or
+        "username" not in body or
+        "password" not in body 
+    ):
+        return jsonify({
+            "response": "Missing properties"
+        }), 400
+    if(
+        body["email"] == "" or
+        body["name"] == "" or
+        body["last_name"] == "" or
+        body["username"] == "" or
+        body["password"] == ""
+    ):
+        return jsonify({
+            "response": "empty property values"
+        }), 400
 
-@app.route('/contact/<int:position>', methods=['DELETE'])
-def delete_contact(position):
-    contact_to_delete= Contact.query.get_or_404(position)
-    db.session.delete(contact_to_delete)
-    contact_to_delete.deleted = True 
-    db.session.commit()
-    return "borrado", 204
-
-@app.route('/contact/<int:position>', methods=['GET'])
-def handle_hello_users_for_id(position):
-    contact = Contact.query.get(position)
-    if contact is None:
-        return "This contact doesn't exist", 404
-    else:
-        return jsonify(contact.serialize()),200
-
-
-@app.route('/contact/<int:position>', methods=['PUT'])
-def update_contact(position):
-    # First we get the payload json
-    body = request.get_json()
-    if isinstance(body, dict):
-        if body is None:
-            raise APIException("You need to specify the request body as a json object", status_code=400)
-        if 'full_name' not in body:
-            raise APIException('You need to specify the full_name', status_code=400)
-        if 'email' not in body:
-            raise APIException('You need to specify the email', status_code=400)
+    new_user = Contact.register(
+        body["email"],
+        body["name"],
+        body["last_name"],
+        body["username"],
+        body["password"],
         
-    else: return "no es un diccionario", 400        
-    # at this point, all data has been validated, we can proceed to inster into the bd
-    Contact.query.filter(Contact.id == position).update(({
-        'email': body['email'],
-        "full_name": body['full_name']
-    })) 
-    
-    db.session.commit()
-    return "ok", 200
+    )
+    db.session.add(new_user)
+    try:
+        db.session.commit()
+        return jsonify(new_user.serialize()), 201
+    except Exception as error:
+        db.session.rollback()
+        print(f"{error.args} {type(error)}")
+        return jsonify({
+            "response": f"{error.args}"
+        }), 500
 
-@app.route('/contact/<int:position>', methods=['PATCH'])
-def update_contact_property(position):
-    body = request.get_json()
-    contact_to_update = Contact.query.get(position)
-    if contact_to_update is None:
-        raise APIException("You need to specify the contact property", status_code=400)
-    if 'full_name' != None:
-        new_full_name = body['full_name']
-        contact_to_update.full_name = new_full_name
-    if 'email' != None:
-        new_email = body['email']
-        contact_to_update.email = new_email
 
-    db.session.commit()
-    return "Properties updated", 200
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
