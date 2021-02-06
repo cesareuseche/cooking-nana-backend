@@ -56,7 +56,7 @@ def get_user():
 def get_users():
     """ buscar y regresar todos los usuarios """
     users = Contact.query.all()
-    users_serialize = list(map(lambda user: user.serializeUsers(), users))
+    users_serialize = list(map(lambda user: user.serializeUsers(), users)) #serializeUser() se definició como función dentro de la clase Contact
     return jsonify(users_serialize), 200
 
 #Otra cosa que podríamos querer es 
