@@ -36,7 +36,7 @@ def sitemap():
 
 #A diferencia de obtener una lista de contactos
 #ahora la meta es verificar cada usuario que hace login de 
-#manera individual
+#manera individual coincida su password con username
 @app.route('/contact', methods=['GET'])
 @jwt_required
 def get_user():
@@ -126,7 +126,59 @@ def post_user():
             "response": f"{error.args}"
         }), 500
 
+#Ahora vendría un end-point del tipo POST
+#para cuando el usuario introduce su usuario y password
+@app.route("/login", methods=["POST"])
+def handle_login():
+    """ Compara El usuario/correo con la base de datos y genera un token si hay match """
 
+    request_body = request.json
+
+    if request_body is None:
+        return jsonify({
+            "result" : "missing request body"
+
+        }), 400
+
+    if (
+        ("email" not in request_body and "username" not in request_body ) or
+        "password" not in request_body
+    ):
+        return jsonify({
+            "result": "missing fields in request body"
+        }), 400
+
+
+    jwt_identity = ""
+
+    user = None
+
+    if "email" in request_body: 
+        jwt_identity = request_body["email"]
+        user = Contact.query.filter_by(email=request_body["email"]).first()
+    else:
+        jwt_identity = request_body["username"]
+        user = Contact.query.filter_by(username=request_body["username"]).first()
+
+
+    ret = None
+
+    if isinstance(user, Contact):
+        if (user.check_password(request_body["password"])):
+            jwt = create_jwt(identity = user.id)
+            ret = user.serialize()
+            ret["jwt"] = jwt
+        else: 
+            return jsonify({
+                "result": "invalid data"
+            }), 400
+    else:
+        return jsonify({
+                "result": "user not found"
+            }), 404
+                    
+            
+    return jsonify(ret), 200
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
