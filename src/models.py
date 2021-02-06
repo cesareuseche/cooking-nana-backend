@@ -6,7 +6,8 @@ from sqlalchemy import create_engine
 from base64 import b64encode
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timezone
-import osimport json
+import os
+import json
 
 db = SQLAlchemy()
 
