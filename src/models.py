@@ -23,13 +23,12 @@ class Contact(db.Model):
     #bets_sent = db.relationship("Bet", backref="sender", foreign_keys="Bet.sender_id")
     #bets_received = db.relationship("Bet", backref="receiver", foreign_keys="Bet.receiver_id")
 
-    #aca va el relationship con bet
+    #aca va el relationship con otra tabla del tipo many-to many
 
     def __init__(self, email, name, last_name, ludos, username, password, status):
         self.email = email
         self.name = name
         self.last_name = last_name
-        self.ludos = ludos
         self.username = username
         self.salt = b64encode(os.urandom(4)).decode("utf-8")
         self.set_password(password)
@@ -78,7 +77,6 @@ class Contact(db.Model):
             'email' : self.email,
             'name' : self.name,
             'last_name' : self.last_name,
-            'ludos' : self.ludos,
             'username' : self.username,
             'status' : self.status,
             #'bets_sent' : bets_sent_serialize,
