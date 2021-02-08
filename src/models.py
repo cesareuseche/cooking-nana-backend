@@ -20,8 +20,6 @@ class Contact(db.Model):
     password_hash = db.Column(db.String(250), nullable=False)
     salt = db.Column(db.String(16), nullable=False)
     status = db.Column(db.Boolean(), nullable=False)
-    #bets_sent = db.relationship("Bet", backref="sender", foreign_keys="Bet.sender_id")
-    #bets_received = db.relationship("Bet", backref="receiver", foreign_keys="Bet.receiver_id")
 
     #aca va el relationship con otra tabla del tipo many-to many
 
