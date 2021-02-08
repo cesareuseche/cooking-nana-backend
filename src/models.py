@@ -151,7 +151,7 @@ class Ingredient(db.Model):
             self.category = category
             self.recipes = recipes
 
-     @classmethod
+    @classmethod
     def create_ingredient(cls, name, category, recipes):
         new_ingredient = cls(
             name.lower(), 
