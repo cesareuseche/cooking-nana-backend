@@ -80,3 +80,91 @@ class Contact(db.Model):
             'username' : self.username,
             'status' : self.status,
         }
+
+class Recipe(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    description = db.Column(db.String(1000), unique=False, nullable=False)
+    name = db.Column(db.String(120), unique=True, nullable=False)
+    instructions = db.Column(db.String(1000), unique=False, nullable=False)
+    tags = db.Column(db.String(250), nullable=False)
+    likes = db.Column(db.Integer, nullable=True)
+    score = db.Column(db.Integer, nullable=False)
+    date_published = db.Column(db.DateTime(timezone=True), nullable=False)
+    price = db.Column(db.Float, nullable=True)
+    img_url = db.Column(db.String(250), nullable=False)
+    ##la propiedad ingredients debe revisarse para que se relacione con otra tabla many-to-many
+    ingredients_received = db.relationship("Ingredient", backref="receiver", foreign_keys="Ingredient.recipes")
+
+    def __init__(self, name, description, date_published, instructions, tags, likes, score, price, ingredients, img_url):
+            self.name = name
+            self.description = description
+            self.date_published = datetime.now(timezone.utc)
+            self.instructions = instructions
+            self.tags = tags
+            self.likes = likes
+            self.score = score
+            self.price = price
+            self.ingredients_received = ingredients_recived
+            self.img_url = img_url
+
+    @classmethod
+    def register(cls, name, description, date_published, instructions, tags, likes, score, price, ingredients_received, img_url):
+        new_recipe = cls(
+            name.lower(),
+            description.lower(),
+            date_published,
+            instructions,
+            tags,
+            likes,
+            score,
+            price,
+            ingredients_received,
+            img_url
+        )
+        return new_recipe
+
+    def serialize(self):
+        received_ingredients_list = self.ingredients_received
+        received_ingredientes_list_serialize = list(map(lambda bet: bet.serialize(), received_ingredients_list))
+        return {
+            'id' : self.id,
+            'name' : self.name,
+            'description' : self.description,
+            'date_published' : self.date_published,
+            'instructions' : self.instructions,
+            'tags' : self.tags,
+            'likes' : self.likes,
+            'score': self.score,
+            'price': self.price,
+            'ingredients_recived' : self.ingredients_recived,
+            'img_url' : self.img_url,
+        }
+
+class Ingredient(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), unique=True, nullable=False)
+    category = db.Column(db.String(120), nullable=False)
+    recipes = db.Column(db.Integer, db.ForeignKey("recipe.id"))
+
+    def __init__(self, name, category, recipes):
+            self.name = name
+            self.category = category
+            self.recipes = recipes
+
+    @classmethod
+    def create_ingredient(cls, name, category, recipes):
+        new_ingredient = cls(
+            name.lower(), 
+            category.lower(), 
+            recipes,
+        )
+        return new_ingredient
+    
+    def serialize(self):
+        receiver = Recipe.query.get(self.recipes)
+        return {
+            'id' : self.id,
+            'name' : self.name,
+            'category' : self.category,
+            'recipes' : self.recipes
+        }
