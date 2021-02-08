@@ -65,11 +65,6 @@ class Contact(db.Model):
         
 
     def serialize(self):
-        sent_list = self.bets_sent
-        received_list = self.bets_received
-        bets_sent_serialize = list(map(lambda bet: bet.serialize(), sent_list))
-        bets_received_serialize = list(map(lambda bet: bet.serialize(), received_list))
-      
         return {
             'id' : self.id,
             'email' : self.email,
@@ -123,7 +118,7 @@ class Recipe(db.Model):
 
     def serialize(self):
         received_ingredients_list = self.ingredients_received
-        received_ingredientes_list_serialize = list(map(lambda bet: bet.serialize(), received_ingredients_list))
+        received_ingredientes_list_serialize = list(map(lambda ingredient_list: ingredient_list.serialize(), received_ingredients_list))
         return {
             'id' : self.id,
             'name' : self.name,
