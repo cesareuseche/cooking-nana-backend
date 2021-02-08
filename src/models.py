@@ -118,7 +118,7 @@ class Recipe(db.Model):
 
     def serialize(self):
         received_ingredients_list = self.ingredients_received
-        received_ingredientes_list_serialize = list(map(lambda ingredient_list: ingredient_list.serialize(), received_ingredients_list))
+        received_ingredients_list_serialize = list(map(lambda ingredient_list: ingredient_list.serialize(), received_ingredients_list))
         return {
             'id' : self.id,
             'name' : self.name,
@@ -129,7 +129,7 @@ class Recipe(db.Model):
             'likes' : self.likes,
             'score': self.score,
             'price': self.price,
-            'ingredients_recived' : self.ingredients_recived,
+            'ingredients_recived' : self.received_ingredients_list_serialize,
             'img_url' : self.img_url,
         }
 
@@ -159,5 +159,6 @@ class Ingredient(db.Model):
             'id' : self.id,
             'name' : self.name,
             'category' : self.category,
-            'recipes' : self.recipes
+            'recipes' : self.recipes,
+            'receiver' : receiver.name
         }
