@@ -180,11 +180,13 @@ def handle_login():
             
     return jsonify(ret), 200
 
-# @app.route("/ingredients", methods="GET")
-# def get_ingredients():
-#     ingredients = Ingredient.query.all()
-#     ingredients_serialize = list(map(lambda ingredient: ingredient.serialize(), ingredients)) 
-#     return jsonify(ingredients_serialize), 200
+@app.route("/ingredients", methods=["GET"])
+def get_ingredients():
+    ingredients = Ingredient.query.all()
+    ingredients_serialize = list(map(lambda ingredient: ingredient.serialize(), ingredients)) 
+    return jsonify(ingredients_serialize), 200
+
+
 
 
 # this only runs if `$ python src/main.py` is executed
