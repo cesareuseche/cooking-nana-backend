@@ -34,7 +34,7 @@ class Contact(db.Model):
         self.status = status
     
     def set_password (self, password):
-        self.password_hash = generate_password_hash(f"{password}{self.salt}")
+        return generate_password_hash(f"{password}{self.salt}")
     
     def check_password(self, password):
         return check_password_hash(self.password_hash, f"{password}{self.salt}")

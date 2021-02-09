@@ -140,7 +140,8 @@ $ git push heroku master
     This is a GET endpoint, you will need enter the user id to obtain data
 
 ### /login
-
+    You need copy to your .env file the APP_JWT_SECRET LINE
+    
     This is a POST endpoint, enter data as:
     {
         "username":"some_user",
