@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, Contact#, Recipe, Ingredient
+from models import db, Contact, Recipe, Ingredient
 from flask_jwt_simple import (
 JWTManager, jwt_required, create_jwt, get_jwt_identity
 )
@@ -179,6 +179,15 @@ def handle_login():
                     
             
     return jsonify(ret), 200
+
+@app.route("/ingredients", methods=["GET"])
+def get_ingredients():
+    ingredients = Ingredient.query.all()
+    ingredients_serialize = list(map(lambda ingredient: ingredient.serialize(), ingredients)) 
+    return jsonify(ingredients_serialize), 200
+
+
+
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

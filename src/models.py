@@ -153,6 +153,15 @@ class Ingredient(db.Model):
         )
         return new_ingredient
     
+    def serializeIngredient(self):
+        return {
+            'id' : self.id,
+            'name' : self.name,
+            'category' : self.category,
+            'recipes' : self.recipes,
+        }
+
+
     def serialize(self):
         receiver = Recipe.query.get(self.recipes)
         return {
