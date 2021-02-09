@@ -155,15 +155,15 @@ $ git push heroku master
     }
 
     if everything is allright you will get:
-{
-    "email": "email@example.com",
-    "id": 1,
-    "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTI5MDg1MDYsIm5iZiI6MTYxMjkwODUwNiwianRpIjoiNTNlM2RiOTgtYjI0Ni00NWFkLWFkOTMtOTUxZTZhMDY0ODUzIiwiZXhwIjoxNjEyOTA5NDA2LCJpZGVudGl0eSI6MSwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwiY3NyZiI6ImJlOTkzNDE5LWRiZjgtNGQ4MC1hMTVlLWM0OGQyOGJjNGY0NyJ9.s88fi9FzIMWE7AyYRfwDDc-jottegqeMatscAMjr9B0",
-    "last_name": "alastname",
-    "name": "aname",
-    "status": true,
-    "username": "some_user"
-}
+    {
+        "email": "email@example.com",
+        "id": 1,
+        "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTI5MDg1MDYsIm5iZiI6MTYxMjkwODUwNiwianRpIjoiNTNlM2RiOTgtYjI0Ni00NWFkLWFkOTMtOTUxZTZhMDY0ODUzIiwiZXhwIjoxNjEyOTA5NDA2LCJpZGVudGl0eSI6MSwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwiY3NyZiI6ImJlOTkzNDE5LWRiZjgtNGQ4MC1hMTVlLWM0OGQyOGJjNGY0NyJ9.s88fi9FzIMWE7AyYRfwDDc-jottegqeMatscAMjr9B0",
+        "last_name": "alastname",
+        "name": "aname",
+        "status": true,
+        "username": "some_user"
+    }
 
 ### /ingredients
 
