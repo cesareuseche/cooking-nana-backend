@@ -37,7 +37,7 @@ def sitemap():
 #A diferencia de obtener una lista de contactos
 #ahora la meta es verificar cada usuario que hace login de 
 #manera individual coincida su password con username
-@app.route('/contact', methods=['GET'])
+@app.route('/user', methods=['GET'])
 @jwt_required
 def get_user():
     user = Contact.query.get(get_jwt_identity()) #parecido al query.all() pero con la finalidad de obtener los tokens jwt
@@ -52,7 +52,7 @@ def get_user():
 #Por otro lado, si como administradores quisieramos obtener
 #toda la lista de usuarios en la base de datos, haríamos
 #otro método Get con un nuevo end-point.
-@app.route('/contacts', methods=['GET'])
+@app.route('/users', methods=['GET'])
 def get_users():
     """ buscar y regresar todos los usuarios """
     users = Contact.query.all()
@@ -61,7 +61,7 @@ def get_users():
 
 #Otra cosa que podríamos querer es 
 #la información de un usuario en particular
-@app.route('/contact/<user_id>', methods=['GET'])
+@app.route('/user/<user_id>', methods=['GET'])
 def get_user_id(user_id):
     """ buscar y regresar un usuario en especifico """
     user = Contact.query.get(user_id)
