@@ -19,8 +19,8 @@
 
 The following steps are automatically runned withing gitpod, if you are doing a local installation you have to do them manually:
 
--Need to install: `python3 -m pip install flask-jwt-simple`
-`pipenv install flask-jwt-simple`
+-Need to install: `python3 -m pip install flask-jwt-extended`
+`pipenv install flask-jwt-extended`
 
 ```sh
 pipenv install;
@@ -140,8 +140,8 @@ $ git push heroku master
     This is a GET endpoint, you will need enter the user id to obtain data
 
 ### /login
-    You need copy to your .env file the APP_JWT_SECRET LINE
-    
+    You need copy to your .env file the APP_JWT_SECRET LINE (with versión jwt extended, use this lib: create_access_token)
+
     This is a POST endpoint, enter data as:
     {
         "username":"some_user",
@@ -153,6 +153,17 @@ $ git push heroku master
         "email": "email@example.com",
         "password":"notEasy123"
     }
+
+    if everything is allright you will get:
+{
+    "email": "email@example.com",
+    "id": 1,
+    "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTI5MDg1MDYsIm5iZiI6MTYxMjkwODUwNiwianRpIjoiNTNlM2RiOTgtYjI0Ni00NWFkLWFkOTMtOTUxZTZhMDY0ODUzIiwiZXhwIjoxNjEyOTA5NDA2LCJpZGVudGl0eSI6MSwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwiY3NyZiI6ImJlOTkzNDE5LWRiZjgtNGQ4MC1hMTVlLWM0OGQyOGJjNGY0NyJ9.s88fi9FzIMWE7AyYRfwDDc-jottegqeMatscAMjr9B0",
+    "last_name": "alastname",
+    "name": "aname",
+    "status": true,
+    "username": "some_user"
+}
 
 ### /ingredients
 
