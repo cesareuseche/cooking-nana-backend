@@ -104,3 +104,54 @@ $ git push heroku master
 
 1. Try to save database, DO NOT delete migration folder
 2. Read /docs
+
+# TO USE THIS API 
+
+## Endpoint:
+
+### /register
+
+    This is a POST endpoint, so you will need:
+    {
+        "email":"email@example.com",
+        "name":"aName",
+        "last_name":"aLastName",
+        "username":"some_user",
+        "password":"notEasy123"
+    }
+
+    then, if everything is correct, server will respond:
+    {
+        "email": "email@example.com",
+        "id": 1,
+        "last_name": "alastname",
+        "name": "aname",
+        "status": true,
+        "username": "some_user"
+    }
+
+### /users
+
+    This is a GET endpoint, you will obtain a list o all users
+
+### /user/<int:position>
+
+    This is a GET endpoint, you will need enter the user id to obtain data
+
+### /login
+
+    This is a POST endpoint, enter data as:
+    {
+        "username":"some_user",
+        "password":"notEasy123"
+    }
+
+    or this way works too:
+    {
+        "email": "email@example.com",
+        "password":"notEasy123"
+    }
+
+### /ingredients
+
+    This is a GET endpoint, you will obtain a list o all ingredients
