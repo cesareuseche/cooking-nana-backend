@@ -119,3 +119,13 @@ $ git push heroku master
         "username":"some_user",
         "password":"notEasy123"
     }
+
+    then, if everything is correct, server will respond:
+    {
+        "email": "email@example.com",
+        "id": 1,
+        "last_name": "alastname",
+        "name": "aname",
+        "status": true,
+        "username": "some_user"
+    }
