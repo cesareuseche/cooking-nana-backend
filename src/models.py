@@ -44,12 +44,12 @@ class Contact(db.Model):
             email, 
             name.lower(), 
             last_name.lower(),
-            100, 
+            #100, 
             username, 
             password, 
             True
         )
-        return new_contact
+        return new_user
 
 
     def __repr__(self):
