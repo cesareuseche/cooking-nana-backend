@@ -129,3 +129,29 @@ $ git push heroku master
         "status": true,
         "username": "some_user"
     }
+
+### /users
+
+    This is a GET endpoint, you will obtain a list o all users
+
+### /user/<int:position>
+
+    This is a GET endpoint, you will need enter the user id to obtain data
+
+### /login
+
+    This is a POST endpoint, enter data as:
+    {
+        "username":"some_user",
+        "password":"notEasy123"
+    }
+
+    or this way works too:
+    {
+        "email": "email@example.com",
+        "password":"notEasy123"
+    }
+
+### /ingredients
+
+    This is a GET endpoint, you will obtain a list o all ingredients

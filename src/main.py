@@ -12,12 +12,14 @@ from models import db, Contact, Recipe, Ingredient
 from flask_jwt_simple import (
 JWTManager, jwt_required, create_jwt, get_jwt_identity
 )
+from werkzeug.security import safe_str_cmp
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_CONNECTION_STRING')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = os.environ.get("APP_JWT_SECRET")
+app.config['JWT_SECRET_KEY'] = os.environ.get("APP_JWT_SECRET") #Aquí se cambia la configuración de JWT
+app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers']
 MIGRATE = Migrate(app, db)
 db.init_app(app)
 jwt = JWTManager(app) #JSON web tokens para autenticación en el servidor
