@@ -12,7 +12,7 @@ from models import db, Contact, Recipe, Ingredient
 from flask_jwt_simple import (
 JWTManager, jwt_required, create_jwt, get_jwt_identity
 )
-from werkzeug.security import safe_str_cmp
+from werkzeug.security import safe_str_cmp, generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False

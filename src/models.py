@@ -29,6 +29,7 @@ class Contact(db.Model):
         self.last_name = last_name
         self.username = username
         self.salt = b64encode(os.urandom(4)).decode("utf-8")
+        #self.salt= os.urandom(16).hex
         self.set_password(password)
         self.status = status
     
