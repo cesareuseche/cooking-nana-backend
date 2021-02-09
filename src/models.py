@@ -29,11 +29,12 @@ class Contact(db.Model):
         self.last_name = last_name
         self.username = username
         self.salt = b64encode(os.urandom(4)).decode("utf-8")
+        #self.salt= os.urandom(16).hex
         self.set_password(password)
         self.status = status
     
     def set_password (self, password):
-        self.password_hash = generate_password_hash(f"{password}{self.salt}")
+        return generate_password_hash(f"{password}{self.salt}")
     
     def check_password(self, password):
         return check_password_hash(self.password_hash, f"{password}{self.salt}")

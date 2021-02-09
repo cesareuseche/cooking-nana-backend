@@ -21,6 +21,7 @@ flask-admin = "*"
 flask-jwt-simple = "*"
 requests = "*"
 simplejwt = "*"
+flask-jwt-extended = "*"
 
 [requires]
 python_version = "3.8"
