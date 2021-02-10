@@ -86,15 +86,14 @@ class Recipe(db.Model):
     instructions = db.Column(db.String(1000), unique=False, nullable=False)
     tags = db.Column(db.String(250), nullable=False)
     likes = db.Column(db.Integer, nullable=True)
-    score = db.Column(db.Integer, nullable=True)
+    score = db.Column(db.Integer, nullable=False)
     date_published = db.Column(db.DateTime(timezone=True), nullable=False)
     price = db.Column(db.Float, nullable=True)
     img_url = db.Column(db.String(250), nullable=False)
     ##la propiedad ingredients debe revisarse para que se relacione con otra tabla many-to-many
-    #ingredients_received = db.relationship("Ingredient", backref="receiver", foreign_keys="Ingredient.recipes")
-    ingredient = db.relationship("Recipeingredients", backref="recipe")
+    ingredients_received = db.relationship("Ingredient", backref="receiver", foreign_keys="Ingredient.recipes")
 
-    def __init__(self, name, description, date_published, instructions, tags, likes, score, price, img_url, ingredient):
+    def __init__(self, name, description, date_published, instructions, tags, likes, score, price, ingredients, img_url):
             self.name = name
             self.description = description
             self.date_published = datetime.now(timezone.utc)
@@ -103,12 +102,11 @@ class Recipe(db.Model):
             self.likes = likes
             self.score = score
             self.price = price
-            #self.ingredients_received = ingredients_recived
+            self.ingredients_received = ingredients_recived
             self.img_url = img_url
-            self.ingredient = ingredient
 
     @classmethod
-    def register(cls, name, description, date_published, instructions, tags, likes, score, price, img_url, ingredient):
+    def register(cls, name, description, date_published, instructions, tags, likes, score, price, ingredients_received, img_url):
         new_recipe = cls(
             name.lower(),
             description.lower(),
@@ -118,15 +116,14 @@ class Recipe(db.Model):
             likes,
             score,
             price,
-            #ingredients_received,
-            img_url,
-            ingredient
+            ingredients_received,
+            img_url
         )
         return new_recipe
 
     def serialize(self):
-        #received_ingredients_list = self.ingredients_received
-        #received_ingredients_list_serialize = list(map(lambda ingredient_list: ingredient_list.serialize(), received_ingredients_list))
+        received_ingredients_list = self.ingredients_received
+        received_ingredients_list_serialize = list(map(lambda ingredient_list: ingredient_list.serialize(), received_ingredients_list))
         return {
             'id' : self.id,
             'name' : self.name,
@@ -137,33 +134,27 @@ class Recipe(db.Model):
             'likes' : self.likes,
             'score': self.score,
             'price': self.price,
-            #'ingredients_recived' : self.received_ingredients_list_serialize,
+            'ingredients_recived' : self.received_ingredients_list_serialize,
             'img_url' : self.img_url,
-            'ingredient' : self.ingredient
         }
 
 class Ingredient(db.Model):
-    __tablename__ = 'ingredient'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=True, nullable=False)
     category = db.Column(db.String(120), nullable=False)
-    recipe = db.Column(db.Integer, db.ForeignKey("recipe.id"))
-    #recipe = db.relationship("Recipe", secondary=Recipeingredients.__table__, lazy="select")
+    recipes = db.Column(db.Integer, db.ForeignKey("recipe.id"))
 
-    def __init__(self, name, category, recipe):
+    def __init__(self, name, category, recipes):
             self.name = name
             self.category = category
-            self.recipe = recipe
-
-    def __repr__(self):
-        return '<Ingredient %r>' % (self.name.title())
+            self.recipes = recipes
 
     @classmethod
-    def register(cls, name, category, recipe):
+    def register(cls, name, category, recipes):
         new_ingredient = cls(
             name.lower(), 
             category.lower(), 
-            recipe,
+            recipes,
         )
         return new_ingredient
     
@@ -172,42 +163,16 @@ class Ingredient(db.Model):
             'id' : self.id,
             'name' : self.name,
             'category' : self.category,
-            'recipe' : self.recipe,
+            'recipes' : self.recipes,
         }
 
 
     def serialize(self):
-        receiver = Recipe.query.get(self.recipe)
+        receiver = Recipe.query.get(self.recipes)
         return {
             'id' : self.id,
             'name' : self.name,
             'category' : self.category,
-            'recipe' : self.recipe,
-            'receiver' : receiver.name
-        }
-
-class Recipeingredients(db.Model):
-    __tablename__ = 'recipeingredients'
-    id = db.Column(db.Integer, primary_key=True)
-    ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredient.id'), primary_key=True)
-    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), primary_key=True)
-    ingredient = db.relationship("Ingredient", uselist=False)
-    recipes = db.relationship("Recipe", uselist=False)
-    units = db.Column(db.Numeric(4, 2))
-
-    def __init__(self, ingredient=None, units=None):
-        self.ingredient = ingredient
-        self.units = units
-
-    def __repr__(self):
-        return '<Ingredient: %f units of %s>' % (self.units, self.ingredient.name)
-
-    def serialize(self):
-        return {
-            'id' : self.id,
-            'ingredient_id' : self.ingredient_id,
-            'recipe_id' : self.recipe_id,
-            'ingredient' : self.ingredient,
             'recipes' : self.recipes,
-            'units' : self.units
+            'receiver' : receiver.name
         }
