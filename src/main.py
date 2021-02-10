@@ -195,7 +195,25 @@ def handle_check():
     id_of_user = get_jwt_identity()
     user = Contact.query.get(id_of_user)
     return jsonify({"msg":f"Welcome, {user}"})
-    
+
+
+@app.route('/recipes', methods=['GET'])
+def get_recipes():
+    """ buscar y regresar todos las recetas """
+    recipes = Recipe.query.all()
+    recipes_serialize = list(map(lambda recipe: recipe.serialize(), recipes))
+    return jsonify(recipes_serialize), 200
+
+@app.route('/recipes/<recipe_id>', methods=['GET'])
+def get_recipe_id(user_id):
+    """ buscar y regresar un usuario en especifico """
+    recipe = Recipe.query.get(recipe_id)
+    if isinstance(recipe, Recipe):
+        return jsonify(recipe.serialize()), 200
+    else:
+        return jsonify({
+            "result": "user not found"
+        }), 404
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

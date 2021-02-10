@@ -178,9 +178,15 @@ $ git push heroku master
     {
     "msg": "Welcome, <Contact 'some_user'>"
     }
-    
-    
 
 ### /ingredients
 
     This is a GET endpoint, you will obtain a list o all ingredients
+
+### /recipes
+
+    This could be used as GET endpoint, you will obtain a list o all recipes
+
+### /recipes/<int:position>
+
+    This is a GET endpoint, you will need enter the recipe id to obtain data
