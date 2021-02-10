@@ -232,7 +232,6 @@ def post_recipe():
         "name" not in body or
         "instructions" not in body or
         "tags" not in body or
-        "price" not in body or
         "img_url" not in body 
     ):
         return jsonify({
@@ -243,7 +242,6 @@ def post_recipe():
         body["name"] == "" or
         body["instructions"] == "" or
         body["tags"] == "" or
-        body["price"] == "" or
         body["img_url"] == ""
     ):
         return jsonify({
@@ -263,6 +261,48 @@ def post_recipe():
     try:
         db.session.commit()
         return jsonify(new_recipe.serialize()), 201
+    except Exception as error:
+        db.session.rollback()
+        print(f"{error.args} {type(error)}")
+        return jsonify({
+            "response": f"{error.args}"
+        }), 500
+
+@app.route('/ingredients', methods=['POST'])
+def post_recipe():
+    """
+        "POST": registrar un ingrediente
+    """
+    body = request.json
+    if body is None:
+        return jsonify({
+            "response": "empty body"
+        }), 400
+
+    if (
+        "name" not in body or
+        "category" not in body 
+    ):
+        return jsonify({
+            "response": "Missing properties"
+        }), 400
+    if(
+        body["name"] == "" or
+        body["category"] == ""
+    ):
+        return jsonify({
+            "response": "empty property values"
+        }), 400
+
+    new_user = Ingredient.register(
+        body["name"],
+        body["category"],
+        
+    )
+    db.session.add(new_ingredient)
+    try:
+        db.session.commit()
+        return jsonify(new_ingredient.serialize()), 201
     except Exception as error:
         db.session.rollback()
         print(f"{error.args} {type(error)}")
