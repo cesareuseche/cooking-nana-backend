@@ -86,14 +86,15 @@ class Recipe(db.Model):
     instructions = db.Column(db.String(1000), unique=False, nullable=False)
     tags = db.Column(db.String(250), nullable=False)
     likes = db.Column(db.Integer, nullable=True)
-    score = db.Column(db.Integer, nullable=False)
+    score = db.Column(db.Integer, nullable=True)
     date_published = db.Column(db.DateTime(timezone=True), nullable=False)
     price = db.Column(db.Float, nullable=True)
     img_url = db.Column(db.String(250), nullable=False)
     ##la propiedad ingredients debe revisarse para que se relacione con otra tabla many-to-many
-    ingredients_received = db.relationship("Ingredient", backref="receiver", foreign_keys="Ingredient.recipes")
+    #ingredients_received = db.relationship("Ingredient", backref="receiver", foreign_keys="Ingredient.recipes")
+    Ingredient = db.relationship("RecipeIngredients")
 
-    def __init__(self, name, description, date_published, instructions, tags, likes, score, price, ingredients, img_url):
+    def __init__(self, name, description, date_published, instructions, tags, likes, score, price, ingredients, img_url, Ingredient):
             self.name = name
             self.description = description
             self.date_published = datetime.now(timezone.utc)
@@ -102,11 +103,12 @@ class Recipe(db.Model):
             self.likes = likes
             self.score = score
             self.price = price
-            self.ingredients_received = ingredients_recived
+            #self.ingredients_received = ingredients_recived
             self.img_url = img_url
+            self.Ingredient = Ingredient
 
     @classmethod
-    def register(cls, name, description, date_published, instructions, tags, likes, score, price, ingredients_received, img_url):
+    def register(cls, name, description, date_published, instructions, tags, likes, score, price, img_url, Ingredient):
         new_recipe = cls(
             name.lower(),
             description.lower(),
@@ -116,14 +118,15 @@ class Recipe(db.Model):
             likes,
             score,
             price,
-            ingredients_received,
-            img_url
+            #ingredients_received,
+            img_url,
+            Ingredient
         )
         return new_recipe
 
     def serialize(self):
-        received_ingredients_list = self.ingredients_received
-        received_ingredients_list_serialize = list(map(lambda ingredient_list: ingredient_list.serialize(), received_ingredients_list))
+        #received_ingredients_list = self.ingredients_received
+        #received_ingredients_list_serialize = list(map(lambda ingredient_list: ingredient_list.serialize(), received_ingredients_list))
         return {
             'id' : self.id,
             'name' : self.name,
@@ -134,8 +137,9 @@ class Recipe(db.Model):
             'likes' : self.likes,
             'score': self.score,
             'price': self.price,
-            'ingredients_recived' : self.received_ingredients_list_serialize,
+            #'ingredients_recived' : self.received_ingredients_list_serialize,
             'img_url' : self.img_url,
+            'ingredient' : self.Ingredient
         }
 
 class Ingredient(db.Model):
@@ -175,4 +179,25 @@ class Ingredient(db.Model):
             'category' : self.category,
             'recipes' : self.recipes,
             'receiver' : receiver.name
+        }
+
+class RecipeIngredients(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredient.id'))
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))
+    ingredient = db.relationship("Ingredient", uselist=False)
+    recipe = db.relationship("Recipe", uselist=False)
+    units = db.Column(db.Float)
+
+    def __repr__(self):
+        return '<Ingredient: %f units of %s>' % (self.units, self.ingredient.name)
+
+    def serialize(self):
+        return {
+            'id' : self.id,
+            'ingredient_id' : self.ingredient_id,
+            'recipe_id' : self.recipe_id,
+            'ingredient' : self.ingredient,
+            'recipe' : self.recipe,
+            'units' : self.units
         }
