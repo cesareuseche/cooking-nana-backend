@@ -1,6 +1,6 @@
 import os
 from flask_admin import Admin
-from models import db, Contact, Recipe, Ingredient, Recipeingredients #import class associated with a database that can be edited from web app
+from models import db, Contact, Recipe #import class associated with a database that can be edited from web app
 from flask_admin.contrib.sqla import ModelView
 
 def setup_admin(app):
