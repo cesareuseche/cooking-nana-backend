@@ -30,7 +30,7 @@ class Contact(db.Model):
         self.username = username
         self.salt = b64encode(os.urandom(4)).decode("utf-8")
         #self.salt= os.urandom(16).hex
-        self.set_password(password)
+        self.password_hash = self.set_password(password)
         self.status = status
     
     def set_password (self, password):
