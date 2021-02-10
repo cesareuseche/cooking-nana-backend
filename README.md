@@ -181,7 +181,14 @@ $ git push heroku master
 
 ### /ingredients
 
-    This is a GET endpoint, you will obtain a list o all ingredients
+    This could be used as GET endpoint, you will obtain a list o all ingredients.
+
+    When this endpoint is used with POST method, data should be as:
+
+    {
+        "name":"name of ingredient",
+        "category":"category of ingredient"
+    }
 
 ### /recipes
 
@@ -190,11 +197,11 @@ $ git push heroku master
     When this endpoint is used with POST method, data should be as:
 
     {
-        "description":"Description of the recipe"
-        "name":"Name of recipe"
-        "instructions":"Some instructions of how to cook"
-        "tags":"tags will help to find recipe"
-        "price":"this property could be null"
+        "description":"Description of the recipe",
+        "name":"Name of recipe",
+        "instructions":"Some instructions of how to cook",
+        "tags":"tags will help to find recipe",
+        "price":"this property could be null",
         "img_url":"add url of recipe's image"
     }
 
