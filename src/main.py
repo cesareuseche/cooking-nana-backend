@@ -206,7 +206,7 @@ def get_recipes():
 
 @app.route('/recipes/<recipe_id>', methods=['GET'])
 def get_recipe_id(user_id):
-    """ buscar y regresar un usuario en especifico """
+    """ buscar y regresar una receta en especifico """
     recipe = Recipe.query.get(recipe_id)
     if isinstance(recipe, Recipe):
         return jsonify(recipe.serialize()), 200
@@ -214,6 +214,61 @@ def get_recipe_id(user_id):
         return jsonify({
             "result": "user not found"
         }), 404
+
+
+@app.route('/recipes', methods=['POST'])
+def post_recipe():
+    """
+        "POST": registrar un usuario y devolverlo
+    """
+    body = request.json
+    if body is None:
+        return jsonify({
+            "response": "empty body"
+        }), 400
+
+    if (
+        "description" not in body or
+        "name" not in body or
+        "instructions" not in body or
+        "tags" not in body or
+        "price" not in body or
+        "img_url" not in body 
+    ):
+        return jsonify({
+            "response": "Missing properties"
+        }), 400
+    if(
+        body["description"] == "" or
+        body["name"] == "" or
+        body["instructions"] == "" or
+        body["tags"] == "" or
+        body["price"] == "" or
+        body["img_url"] == ""
+    ):
+        return jsonify({
+            "response": "empty property values"
+        }), 400
+
+    new_user = Recipe.register(
+        body["description"],
+        body["name"],
+        body["instructions"],
+        body["tags"],
+        body["price"],
+        body["img_url"],
+        
+    )
+    db.session.add(new_recipe)
+    try:
+        db.session.commit()
+        return jsonify(new_recipe.serialize()), 201
+    except Exception as error:
+        db.session.rollback()
+        print(f"{error.args} {type(error)}")
+        return jsonify({
+            "response": f"{error.args}"
+        }), 500
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

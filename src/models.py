@@ -150,7 +150,7 @@ class Ingredient(db.Model):
             self.recipes = recipes
 
     @classmethod
-    def create_ingredient(cls, name, category, recipes):
+    def register(cls, name, category, recipes):
         new_ingredient = cls(
             name.lower(), 
             category.lower(), 
