@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, Contact, Recipe, Ingredient
+from models import db, Contact, Recipe, Ingredient, Recipeingredients
 from flask_jwt_extended import (
 JWTManager, jwt_required, create_access_token, get_jwt_identity
 )
@@ -186,7 +186,7 @@ def handle_login():
 @app.route("/ingredients", methods=["GET"])
 def get_ingredients():
     ingredients = Ingredient.query.all()
-    ingredients_serialize = list(map(lambda ingredient: ingredient.serialize(), ingredients)) 
+    ingredients_serialize = list(map(lambda ingredient: ingredient.serializeIngredient(), ingredients)) 
     return jsonify(ingredients_serialize), 200
 
 @app.route("/check")
@@ -232,7 +232,8 @@ def post_recipe():
         "name" not in body or
         "instructions" not in body or
         "tags" not in body or
-        "img_url" not in body 
+        "img_url" not in body or
+        "Ingredients" not in body
     ):
         return jsonify({
             "response": "Missing properties"
@@ -242,7 +243,8 @@ def post_recipe():
         body["name"] == "" or
         body["instructions"] == "" or
         body["tags"] == "" or
-        body["img_url"] == ""
+        body["img_url"] == "" or
+        body["Ingredients"] == ""
     ):
         return jsonify({
             "response": "empty property values"
@@ -255,6 +257,7 @@ def post_recipe():
         body["tags"],
         body["price"],
         body["img_url"],
+        body["Ingredients"]
         
     )
     db.session.add(new_recipe)

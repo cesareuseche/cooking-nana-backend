@@ -92,9 +92,9 @@ class Recipe(db.Model):
     img_url = db.Column(db.String(250), nullable=False)
     ##la propiedad ingredients debe revisarse para que se relacione con otra tabla many-to-many
     #ingredients_received = db.relationship("Ingredient", backref="receiver", foreign_keys="Ingredient.recipes")
-    Ingredient = db.relationship("RecipeIngredients")
+    ingredient = db.relationship("Recipeingredients", backref="recipe")
 
-    def __init__(self, name, description, date_published, instructions, tags, likes, score, price, ingredients, img_url, Ingredient):
+    def __init__(self, name, description, date_published, instructions, tags, likes, score, price, img_url, ingredient):
             self.name = name
             self.description = description
             self.date_published = datetime.now(timezone.utc)
@@ -105,10 +105,10 @@ class Recipe(db.Model):
             self.price = price
             #self.ingredients_received = ingredients_recived
             self.img_url = img_url
-            self.Ingredient = Ingredient
+            self.ingredient = ingredient
 
     @classmethod
-    def register(cls, name, description, date_published, instructions, tags, likes, score, price, img_url, Ingredient):
+    def register(cls, name, description, date_published, instructions, tags, likes, score, price, img_url, ingredient):
         new_recipe = cls(
             name.lower(),
             description.lower(),
@@ -120,7 +120,7 @@ class Recipe(db.Model):
             price,
             #ingredients_received,
             img_url,
-            Ingredient
+            ingredient
         )
         return new_recipe
 
@@ -139,26 +139,28 @@ class Recipe(db.Model):
             'price': self.price,
             #'ingredients_recived' : self.received_ingredients_list_serialize,
             'img_url' : self.img_url,
-            'ingredient' : self.Ingredient
+            'ingredient' : self.ingredient
         }
 
 class Ingredient(db.Model):
+    __tablename__ = 'ingredient'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=True, nullable=False)
     category = db.Column(db.String(120), nullable=False)
-    recipes = db.Column(db.Integer, db.ForeignKey("recipe.id"))
+    recipe = db.Column(db.Integer, db.ForeignKey("recipe.id"))
+    #recipe = db.relationship("Recipe", secondary=Recipeingredients.__table__, lazy="select")
 
-    def __init__(self, name, category, recipes):
+    def __init__(self, name, category, recipe):
             self.name = name
             self.category = category
-            self.recipes = recipes
+            self.recipe = recipe
 
     @classmethod
-    def register(cls, name, category, recipes):
+    def register(cls, name, category, recipe):
         new_ingredient = cls(
             name.lower(), 
             category.lower(), 
-            recipes,
+            recipe,
         )
         return new_ingredient
     
@@ -167,27 +169,32 @@ class Ingredient(db.Model):
             'id' : self.id,
             'name' : self.name,
             'category' : self.category,
-            'recipes' : self.recipes,
+            'recipe' : self.recipe,
         }
 
 
     def serialize(self):
-        receiver = Recipe.query.get(self.recipes)
+        receiver = Recipe.query.get(self.recipe)
         return {
             'id' : self.id,
             'name' : self.name,
             'category' : self.category,
-            'recipes' : self.recipes,
+            'recipe' : self.recipe,
             'receiver' : receiver.name
         }
 
-class RecipeIngredients(db.Model):
+class Recipeingredients(db.Model):
+    __tablename__ = 'recipeingredients'
     id = db.Column(db.Integer, primary_key=True)
-    ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredient.id'))
-    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))
+    ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredient.id'), primary_key=True)
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), primary_key=True)
     ingredient = db.relationship("Ingredient", uselist=False)
-    recipe = db.relationship("Recipe", uselist=False)
-    units = db.Column(db.Float)
+    recipes = db.relationship("Recipe", uselist=False)
+    units = db.Column(db.Numeric(4, 2))
+
+    def __init__(self, ingredient=None, units=None):
+        self.ingredient = ingredient
+        self.units = units
 
     def __repr__(self):
         return '<Ingredient: %f units of %s>' % (self.units, self.ingredient.name)
@@ -198,6 +205,6 @@ class RecipeIngredients(db.Model):
             'ingredient_id' : self.ingredient_id,
             'recipe_id' : self.recipe_id,
             'ingredient' : self.ingredient,
-            'recipe' : self.recipe,
+            'recipes' : self.recipes,
             'units' : self.units
         }
