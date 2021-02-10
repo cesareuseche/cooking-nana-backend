@@ -269,7 +269,7 @@ def post_recipe():
         }), 500
 
 @app.route('/ingredients', methods=['POST'])
-def post_recipe():
+def post_recipe_handle():
     """
         "POST": registrar un ingrediente
     """
