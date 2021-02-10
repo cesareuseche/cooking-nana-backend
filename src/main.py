@@ -189,8 +189,13 @@ def get_ingredients():
     ingredients_serialize = list(map(lambda ingredient: ingredient.serialize(), ingredients)) 
     return jsonify(ingredients_serialize), 200
 
-
-
+@app.route("/check")
+@jwt_required
+def handle_check():
+    id_of_user = get_jwt_identity()
+    user = Contact.query.get(id_of_user)
+    return jsonify({"msg":f"Welcome, {user}"})
+    
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

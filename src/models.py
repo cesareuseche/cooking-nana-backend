@@ -64,6 +64,10 @@ class Contact(db.Model):
             'email': self.email
         }
         
+    def serializeUsername(self):
+        return{
+            'username' : self.username,
+        }    
 
     def serialize(self):
         return {
