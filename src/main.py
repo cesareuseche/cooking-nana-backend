@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, Contact, Recipe, Ingredient
+from models import db, Contact, Recipe, Ingredient, Recipeingredients
 from flask_jwt_extended import (
 JWTManager, jwt_required, create_access_token, get_jwt_identity
 )
@@ -186,7 +186,7 @@ def handle_login():
 @app.route("/ingredients", methods=["GET"])
 def get_ingredients():
     ingredients = Ingredient.query.all()
-    ingredients_serialize = list(map(lambda ingredient: ingredient.serialize(), ingredients)) 
+    ingredients_serialize = list(map(lambda ingredient: ingredient.serializeIngredient(), ingredients)) 
     return jsonify(ingredients_serialize), 200
 
 @app.route("/check")
@@ -206,7 +206,7 @@ def get_recipes():
 
 @app.route('/recipes/<recipe_id>', methods=['GET'])
 def get_recipe_id(user_id):
-    """ buscar y regresar un usuario en especifico """
+    """ buscar y regresar una receta en especifico """
     recipe = Recipe.query.get(recipe_id)
     if isinstance(recipe, Recipe):
         return jsonify(recipe.serialize()), 200
@@ -214,6 +214,104 @@ def get_recipe_id(user_id):
         return jsonify({
             "result": "user not found"
         }), 404
+
+
+@app.route('/recipes', methods=['POST'])
+def post_recipe():
+    """
+        "POST": registrar un usuario y devolverlo
+    """
+    body = request.json
+    if body is None:
+        return jsonify({
+            "response": "empty body"
+        }), 400
+
+    if (
+        "description" not in body or
+        "name" not in body or
+        "instructions" not in body or
+        "tags" not in body or
+        "img_url" not in body or
+        "Ingredients" not in body
+    ):
+        return jsonify({
+            "response": "Missing properties"
+        }), 400
+    if(
+        body["description"] == "" or
+        body["name"] == "" or
+        body["instructions"] == "" or
+        body["tags"] == "" or
+        body["img_url"] == "" or
+        body["Ingredients"] == ""
+    ):
+        return jsonify({
+            "response": "empty property values"
+        }), 400
+
+    new_user = Recipe.register(
+        body["description"],
+        body["name"],
+        body["instructions"],
+        body["tags"],
+        body["price"],
+        body["img_url"],
+        body["Ingredients"]
+        
+    )
+    db.session.add(new_recipe)
+    try:
+        db.session.commit()
+        return jsonify(new_recipe.serialize()), 201
+    except Exception as error:
+        db.session.rollback()
+        print(f"{error.args} {type(error)}")
+        return jsonify({
+            "response": f"{error.args}"
+        }), 500
+
+@app.route('/ingredients', methods=['POST'])
+def post_recipe_handle():
+    """
+        "POST": registrar un ingrediente
+    """
+    body = request.json
+    if body is None:
+        return jsonify({
+            "response": "empty body"
+        }), 400
+
+    if (
+        "name" not in body or
+        "category" not in body 
+    ):
+        return jsonify({
+            "response": "Missing properties"
+        }), 400
+    if(
+        body["name"] == "" or
+        body["category"] == ""
+    ):
+        return jsonify({
+            "response": "empty property values"
+        }), 400
+
+    new_user = Ingredient.register(
+        body["name"],
+        body["category"],
+        
+    )
+    db.session.add(new_ingredient)
+    try:
+        db.session.commit()
+        return jsonify(new_ingredient.serialize()), 201
+    except Exception as error:
+        db.session.rollback()
+        print(f"{error.args} {type(error)}")
+        return jsonify({
+            "response": f"{error.args}"
+        }), 500
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
