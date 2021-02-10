@@ -167,12 +167,12 @@ $ git push heroku master
 
 ### /check
     This is a GET endpoint, it will retrieve Authorization.
-    For that you must enter jwt generated Toked as Beare Token on header.
+    For that you must enter jwt generated Toked as Beare Token on HEADER.
 
     Example:
-    ```sh
+    
     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTI5MDg1MDYsIm5iZiI6MTYxMjkwODUwNiwianRpIjoiNTNlM2RiOTgtYjI0Ni00NWFkLWFkOTMtOTUxZTZhMDY0ODUzIiwiZXhwIjoxNjEyOTA5NDA2LCJpZGVudGl0eSI6MSwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwiY3NyZiI6ImJlOTkzNDE5LWRiZjgtNGQ4MC1hMTVlLWM0OGQyOGJjNGY0NyJ9.s88fi9FzIMWE7AyYRfwDDc-jottegqeMatscAMjr9B0
-    ```
+    
     
 
 ### /ingredients
