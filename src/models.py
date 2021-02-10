@@ -155,6 +155,9 @@ class Ingredient(db.Model):
             self.category = category
             self.recipe = recipe
 
+    def __repr__(self):
+        return '<Ingredient %r>' % (self.name.title())
+
     @classmethod
     def register(cls, name, category, recipe):
         new_ingredient = cls(
