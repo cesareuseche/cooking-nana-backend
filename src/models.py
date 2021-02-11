@@ -195,9 +195,10 @@ class Recipeingredients(db.Model):
     # recipes = db.relationship("Recipe", uselist=False)
     units = db.Column(db.Numeric(4, 2))
 
-    def __init__(self, ingredient_id=None, units=None):
+    def __init__(self, ingredient_id=None, units=None, recipe_id=None):
         self.ingredient_id = ingredient_id
         self.units = units
+        self.recipe_id = recipe_id
 
     def __repr__(self):
         return '<Ingredient: %f units of %s>' % (self.units, self.ingredient_id) 
