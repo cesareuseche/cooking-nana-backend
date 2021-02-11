@@ -167,7 +167,7 @@ $ git push heroku master
 
 ### /check
     This is a GET endpoint, it will retrieve Authorization.
-    For that you must enter jwt generated Toked as Beare Token on HEADER.
+    For that you must enter jwt generated Token at login endpoint, as Bearer Token on HEADER.
 
     Example:
     
