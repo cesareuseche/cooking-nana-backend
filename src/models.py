@@ -207,7 +207,7 @@ class Recipeingredients(db.Model):
             'id' : self.id,
             'ingredient_id' : self.ingredient_id,
             'recipe_id' : self.recipe_id,
-            'ingredient' : self.ingredient,
-            'recipes' : self.recipes,
+            #'ingredient' : self.ingredient,
+            #'recipes' : self.recipes,
             'units' : self.units
         }
