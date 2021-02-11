@@ -194,8 +194,9 @@ def post_ingredients():
     """
         "POST": registrar un ingrediente
     """
-    body = request.json
-    if body is None:
+    request_body = request.json
+
+    if request_body is None:
         return jsonify({
             "response": "empty body"
         }), 400
@@ -208,16 +209,16 @@ def post_ingredients():
         }), 400
 
     if(
-        body["name"] == "" or
-        body["category"] == ""
+        request_body["name"] == "" or
+        request_body["category"] == ""
     ):
         return jsonify({
             "response": "empty property values"
         }), 400
 
     new_ingredient = Ingredient.register(
-        body["name"],
-        body["category"],        
+        request_body["name"],
+        request_body["category"],        
     )
     db.session.add(new_ingredient)
     try:
