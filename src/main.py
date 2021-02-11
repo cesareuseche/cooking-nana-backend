@@ -200,8 +200,7 @@ def post_ingredients():
             "response": "empty body"
         }), 400
 
-    if ()
-        ("name" not in request_body   or
+    if("name" not in request_body   or
         "category" not in request_body
     ):
         return jsonify({
