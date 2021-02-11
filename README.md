@@ -219,10 +219,10 @@ We are making this API as part of back-end of our final 4Geeks Academy Fullstack
     
 In alphabetical order:
 
--[Becerra, Humberto](https://github.com/humbi-exe) /
--[Martínez, Antonio](https://github.com/metantonio) /
--[Pérez, Vincent](https://github.com/vinsh15) /
--[Useche, César](https://github.com/cesareuseche) /
+[Becerra, Humberto](https://github.com/humbi-exe) /
+[Martínez, Antonio](https://github.com/metantonio) /
+[Pérez, Vincent](https://github.com/vinsh15) /
+[Useche, César](https://github.com/cesareuseche) /
 
 <p align="center">
   <a href="https://github.com/vinsh15/backend-prototype">
