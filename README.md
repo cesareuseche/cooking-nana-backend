@@ -240,15 +240,19 @@ $ git push heroku master
 </p>
 <p align="center">
   <a href="https://github.com/humbi-exe">
+    <h3>Humberto</h3>
     <img src="https://img.shields.io/website?down_message=down&up_color=green&up_message=online&url=https%3A%2F%2Fsupercookie.me" alt="Humberto Becerra">
   </a>
   <a href="https://github.com/metantonio">
+    <h3>Antonio</h3>
     <img src="https://img.shields.io/website?down_message=down&up_color=green&up_message=online&url=https%3A%2F%2Fsupercookie.me" alt="Antonio Martínez">
   </a>
   <a href="https://github.com/vinsh15">
+    <h3>Vincent</h3>
     <img src="https://img.shields.io/website?down_message=down&up_color=green&up_message=online&url=https%3A%2F%2Fsupercookie.me" alt="Vincent Pérez">
   </a>
   <a href="https://github.com/cesareuseche">
+    <h3>César</h3>
     <img src="https://img.shields.io/website?down_message=down&up_color=green&up_message=online&url=https%3A%2F%2Fsupercookie.me" alt="César Useche">
   </a>
 </p>
