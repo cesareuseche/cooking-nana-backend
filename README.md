@@ -219,14 +219,14 @@ $ git push heroku master
     
     In alphabetical order:
 
-    Becerra, Humberto(https://github.com/humbi-exe)
-    Martínez, Antonio(https://github.com/metantonio)
-    Pérez, Vincent(https://github.com/vinsh15)
-    Useche, César(https://github.com/cesareuseche)
+    [Becerra, Humberto](https://github.com/humbi-exe)
+    [Martínez, Antonio](https://github.com/metantonio)
+    [Pérez, Vincent](https://github.com/vinsh15)
+    [Useche, César](https://github.com/cesareuseche)
 
 <p align="center">
   <a href="https://github.com/vinsh15/backend-prototype">
-    <img src="https://github.com/cesareuseche/frontend-prototype/blob/master/src/img/Cooking-nana.png" alt="supercookie" width="100px" />
+    <img src="https://github.com/cesareuseche/cooking-nana-frontend/blob/master/src/img/logo.png" alt="Cooking-nana" width="100px" />
   </a>
 </p>
 
@@ -236,23 +236,5 @@ $ git push heroku master
   </a>
   <a href="https://github.com/vinsh15/backend-prototype">
     <img src="https://img.shields.io/github/license/jonasstrehle/supercookie" alt="License">
-  </a>
-</p>
-<p align="center">
-  <a href="https://github.com/humbi-exe">
-    <h3>Humberto</h3>
-    <img src="https://img.shields.io/website?down_message=down&up_color=green&up_message=online&url=https%3A%2F%2Fsupercookie.me" alt="Humberto Becerra">
-  </a>
-  <a href="https://github.com/metantonio">
-    <h3>Antonio</h3>
-    <img src="https://img.shields.io/website?down_message=down&up_color=green&up_message=online&url=https%3A%2F%2Fsupercookie.me" alt="Antonio Martínez">
-  </a>
-  <a href="https://github.com/vinsh15">
-    <h3>Vincent</h3>
-    <img src="https://img.shields.io/website?down_message=down&up_color=green&up_message=online&url=https%3A%2F%2Fsupercookie.me" alt="Vincent Pérez">
-  </a>
-  <a href="https://github.com/cesareuseche">
-    <h3>César</h3>
-    <img src="https://img.shields.io/website?down_message=down&up_color=green&up_message=online&url=https%3A%2F%2Fsupercookie.me" alt="César Useche">
   </a>
 </p>
