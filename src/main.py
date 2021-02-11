@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, Contact, Recipe
+from models import db, Contact, Recipe, Ingredient, Recipeingredients
 from flask_jwt_extended import (
 JWTManager, jwt_required, create_access_token, get_jwt_identity
 )
