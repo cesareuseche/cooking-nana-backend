@@ -148,7 +148,7 @@ class Ingredient(db.Model):
     name = db.Column(db.String(120), unique=True, nullable=False)
     category = db.Column(db.String(120), nullable=False)
     #recipe = db.Column(db.Integer, db.ForeignKey("recipeingredients.recipe_id"))
-    recipe = db.relationship("Recipeingredients", backref="ingredient", nullable=True)
+    recipe = db.relationship("Recipeingredients", backref="ingredient")
 
     def __init__(self, name, category, recipe):
             self.name = name
