@@ -193,9 +193,9 @@ class Recipeingredients(db.Model):
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), primary_key=True)
     # ingredient = db.relationship("Ingredient", uselist=False)
     # recipes = db.relationship("Recipe", uselist=False)
-     units = db.Column(db.Numeric(4, 2))
+    units = db.Column(db.Numeric(4, 2))
 
-    def __init__(self, ingredient=None, units=None):
+    def __init__(self, ingredient_id=None, units=None):
         self.ingredient_id = ingredient_id
         self.units = units
 
@@ -207,7 +207,5 @@ class Recipeingredients(db.Model):
             'id' : self.id,
             'ingredient_id' : self.ingredient_id,
             'recipe_id' : self.recipe_id,
-            #'ingredient' : self.ingredient,
-            #'recipes' : self.recipes,
             'units' : self.units
         }
