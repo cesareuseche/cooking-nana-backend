@@ -208,3 +208,45 @@ $ git push heroku master
 ### /recipes/<int:position>
 
     This is a GET endpoint, you will need enter the recipe id to obtain data
+
+
+
+## Other
+
+### [🙎‍♂️ About us]
+
+    We are making this API as part of back-end of our final 4Geeks Academy Fullstack course project.
+    
+    In alphabetical order:
+
+    Becerra, Humberto(https://github.com/humbi-exe)
+    Martínez, Antonio(https://github.com/metantonio)
+    Pérez, Vincent(https://github.com/vinsh15)
+    Useche, César(https://github.com/cesareuseche)
+
+<p align="center">
+  <a href="https://github.com/vinsh15/backend-prototype">
+    <img src="https://github.com/cesareuseche/frontend-prototype/blob/master/src/img/Cooking-nana.png" alt="supercookie" width="100px" />
+  </a>
+</p>
+<p align="center">
+  <a href="https://github.com/vinsh15/backend-prototype">
+    <img src="https://img.shields.io/badge/Docs-supercookie.me-blue" alt="Documentation">
+  </a>
+</p>
+<p align="center">
+  <a href="https://github.com/vinsh15/backend-prototype">
+    <img src="https://img.shields.io/website?down_message=down&up_color=green&up_message=online&url=https%3A%2F%2Fsupercookie.me" alt="Website Status">
+  </a>
+  <a href="https://github.com/vinsh15/backend-prototype">
+    <img src="https://img.shields.io/github/license/jonasstrehle/supercookie" alt="License">
+  </a>
+</p>
+<p align="center">
+  <a href="https://github.com/vinsh15/backend-prototype">
+    <img src="https://img.shields.io/badge/dynamic/json?label=Fingerprints&query=index&url=https://github.com/vinsh15/backend-prototype/api&color=yellow" alt="Fingerprint index">
+  </a>
+  <a href="https://github.com/vinsh15/backend-prototype">
+    <img src="https://img.shields.io/badge/dynamic/json?label=Current%20redirects&query=bits&url=https://github.com/vinsh15/backend-prototype/api&color=yellow" alt="N Redirects">
+  </a>
+</p>
