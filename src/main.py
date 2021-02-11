@@ -274,7 +274,6 @@ def post_recipe():
         "name" not in body or
         "instructions" not in body or
         "tags" not in body or
-        "price" not in body or
         "img_url" not in body 
     ):
         return jsonify({
@@ -285,12 +284,14 @@ def post_recipe():
         body["name"] == "" or
         body["instructions"] == "" or
         body["tags"] == "" or
-        body["price"] == "" or
         body["img_url"] == ""
     ):
         return jsonify({
             "response": "empty property values"
         }), 400
+
+    body["score"]=None
+    body["price"]=None
 
     new_user = Recipe.register(
         body["description"],
@@ -299,7 +300,8 @@ def post_recipe():
         body["tags"],
         body["price"],
         body["img_url"],
-        
+        body["score"],
+        body["price"],
     )
     db.session.add(new_recipe)
     try:

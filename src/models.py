@@ -120,7 +120,6 @@ class Recipe(db.Model):
             price,
             #ingredients_received,
             img_url,
-            ingredients
         )
         return new_recipe
 
@@ -163,7 +162,6 @@ class Ingredient(db.Model):
         new_ingredient = cls(
             name.lower(), 
             category.lower(), 
-            recipe,
         )
         return new_ingredient
     
