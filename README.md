@@ -239,10 +239,16 @@ $ git push heroku master
   </a>
 </p>
 <p align="center">
-  <a href="https://github.com/vinsh15/backend-prototype">
-    <img src="https://img.shields.io/badge/dynamic/json?label=Fingerprints&query=index&url=https://github.com/vinsh15/backend-prototype/api&color=yellow" alt="Fingerprint index">
+  <a href="https://github.com/humbi-exe">
+    <img src="https://img.shields.io/website?down_message=down&up_color=green&up_message=online&url=https%3A%2F%2Fsupercookie.me" alt="Humberto Becerra">
   </a>
-  <a href="https://github.com/vinsh15/backend-prototype">
-    <img src="https://img.shields.io/badge/dynamic/json?label=Current%20redirects&query=bits&url=https://github.com/vinsh15/backend-prototype/api&color=yellow" alt="N Redirects">
+  <a href="https://github.com/metantonio">
+    <img src="https://img.shields.io/website?down_message=down&up_color=green&up_message=online&url=https%3A%2F%2Fsupercookie.me" alt="Antonio Martínez">
+  </a>
+  <a href="https://github.com/vinsh15">
+    <img src="https://img.shields.io/website?down_message=down&up_color=green&up_message=online&url=https%3A%2F%2Fsupercookie.me" alt="Vincent Pérez">
+  </a>
+  <a href="https://github.com/cesareuseche">
+    <img src="https://img.shields.io/website?down_message=down&up_color=green&up_message=online&url=https%3A%2F%2Fsupercookie.me" alt="César Useche">
   </a>
 </p>
