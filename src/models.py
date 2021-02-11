@@ -139,7 +139,7 @@ class Recipe(db.Model):
             'price': self.price,
             #'ingredients_recived' : self.received_ingredients_list_serialize,
             'img_url' : self.img_url,
-            'ingredient' : self.ingredients
+            'ingredients' : self.ingredients
         }
 
 class Ingredient(db.Model):
@@ -147,7 +147,7 @@ class Ingredient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=True, nullable=False)
     category = db.Column(db.String(120), nullable=False)
-    recipe = db.Column(db.Integer, db.ForeignKey("recipe.id"))
+    recipe = db.Column(db.Integer, db.ForeignKey("recipeingredients.recipe_id"))
     #recipe = db.relationship("Recipe", secondary=Recipeingredients.__table__, lazy="select")
 
     def __init__(self, name, category, recipe):
