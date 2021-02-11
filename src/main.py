@@ -189,6 +189,48 @@ def get_ingredients():
     ingredients_serialize = list(map(lambda ingredient: ingredient.serialize(), ingredients)) 
     return jsonify(ingredients_serialize), 200
 
+@app.route("/ingredients", methods=["POST"])
+def post_ingredients():
+    """
+        "POST": registrar un ingrediente
+    """
+    body = request.json
+    if body is None:
+        return jsonify({
+            "response": "empty body"
+        }), 400
+
+    if ()
+        ("name" not in request_body   or
+        "category" not in request_body
+    ):
+        return jsonify({
+            "result": "missing fields in request body"
+        }), 400
+
+    if(
+        body["name"] == "" or
+        body["category"] == ""
+    ):
+        return jsonify({
+            "response": "empty property values"
+        }), 400
+
+    new_ingredient = Ingredient.register(
+        body["name"],
+        body["category"],        
+    )
+    db.session.add(new_ingredient)
+    try:
+        db.session.commit()
+        return jsonify(new_ingredient.serializeIngredient()), 201
+    except Exception as error:
+        db.session.rollback()
+        print(f"{error.args} {type(error)}")
+        return jsonify({
+            "response": f"{error.args}"
+        }), 500
+
 @app.route("/check")
 @jwt_required
 def handle_check():
