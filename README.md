@@ -231,8 +231,8 @@ $ git push heroku master
 </p>
 
 <p align="center">
-  <a href="https://github.com/vinsh15/backend-prototype">
-    <img src="https://img.shields.io/website?down_message=down&up_color=green&up_message=online&url=https%3A%2F%2Fsupercookie.me" alt="Website Status">
+  <a href="https://github.com/cesareuseche/cooking-nana-frontend">
+    <img src="https://img.shields.io/website?down_message=down&up_color=green&up_message=online&url=https%3A%2F%2Fsupercookie.me" alt="Front-End">
   </a>
   <a href="https://github.com/vinsh15/backend-prototype">
     <img src="https://img.shields.io/github/license/jonasstrehle/supercookie" alt="License">
