@@ -17,6 +17,7 @@ from datetime import datetime
 import json
 from io import StringIO
 from ast import literal_eval
+import re
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -319,19 +320,30 @@ def post_recipe():
         print(type (individual_ingredient))
         print(individual_ingredient)
         #Para obtener el id del ingrediente si el nombre del mismo aparece en el body    
-        
         match = db.session.query(Ingredient.id).filter_by(name=individual_ingredient).first()
+        print(f'esto sería el match {match}')
+        print(type(match))
         obtained_ingredients_id.append(match)
-    
+        #con el ejemplo los ID obtenidos vienen como listas, pero siguiente formato [(1,),(2,)], hay que arregarlo
 
-    #print(body["ingredients"])        
-    body["ingredients"] = obtained_ingredients_id     ####hasta aquí está bien
-
-    print(obtained_ingredients_id)
+    print(f'esta sería obtained_id {obtained_ingredients_id}')
     print(type(obtained_ingredients_id))
-    #con el ejemplo los ID obtenidos vienen como listas, pero siguiente formato [(1,),(2,)], hay que arregarlo
-
-
+    string_ingredient_id="".join(map(str, obtained_ingredients_id))
+    #print(f'esta sería como cadena{string_ingredient_id}')
+    string_ingredient_id = string_ingredient_id.strip('()')
+    string_ingredient_id = string_ingredient_id.replace(')(',"")
+    if(string_ingredient_id[-1]==","):
+        string_ingredient_id=string_ingredient_id.rstrip(string_ingredient_id[-1])
+    #print(f'esta sería como cadena recortada {string_ingredient_id}') ##en este punto los id quedan: 1,2
+    string_ingredient_id="["+string_ingredient_id+"]"
+    print(f'esta sería como cadena string {string_ingredient_id}') ##en este punto los id quedan [1,2] pero strings
+    #string_ingredient_id = list(map(int, string_ingredient_id))
+    string_ingredient_id=literal_eval(str(string_ingredient_id))
+    print(f'esta sería como cadena enteros {string_ingredient_id}') ##en este punto devuelve como lista de enteros
+    print(type(string_ingredient_id))
+    #print(body["ingredients"])        
+    body["ingredients"] = string_ingredient_id     ####hasta aquí está bien
+ 
     new_recipe = Recipe.register(
         body["name"],
         body["description"],
