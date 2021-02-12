@@ -367,12 +367,13 @@ def post_recipe():
     recipe_id_list=[]
     ingredients_list=[]
 
+    #Registro clase intermedia Recipeingredients
     new_relationship = Recipeingredients.register(
         ingredients_list.append(integer_ingredient_id),
         recipe_id_list.append(new_recipe_id)
     )
     db.session.add(new_relationship)
-    #db.session.commit()
+    db.session.commit()
 
     ##Registro del nuevo Recipe
     new_list_ingredients=[]
