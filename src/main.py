@@ -373,7 +373,7 @@ def post_recipe():
         recipe_id_list.append(new_recipe_id)
     )
     db.session.add(new_relationship)
-    db.session.commit()
+    #db.session.commit()
 
     ##Registro del nuevo Recipe
     new_list_ingredients=[]
@@ -386,20 +386,23 @@ def post_recipe():
         #body["price"],
         #body["score"],
         body["img_url"],
-        integer_ingredient_id #atributo "ingredients":"[]"
+        body["ingredients"] #atributo "ingredients":"[]"
     )
     db.session.add(new_recipe)
-    db.session.commit()
+    #db.session.commit()
 
     #Suponemos que del body llega una lista [onion, potato] de ingredientes, tal que:
     ingredients_body = body["ingredients"]
     for individual_ingredient in ingredients_body:
         if (
         individual_ingredient != Ingredient.query.filter_by(name=body["name"]).first()):
-            new_ingredient = Ingredient.register(individual_ingredient, "", Recipeingredients.query.order_by(Recipeingredients.recipe_id.desc()).first())
-            db.session.add(new_ingredient)
-            obtained_ingredient.append(individual_ingredient)
+            
+            new_ingredient = Ingredient.register(
+            individual_ingredient,
+            "none",        
+            )
             try:
+                db.session.add(new_ingredient)
                 db.session.commit()
             except Exception as error:
                 db.session.rollback()
