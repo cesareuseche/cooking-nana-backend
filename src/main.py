@@ -339,11 +339,21 @@ def post_recipe():
     print(f'esta sería como cadena string {string_ingredient_id}') ##en este punto los id quedan [1,2] pero strings
     #string_ingredient_id = list(map(int, string_ingredient_id))
     string_ingredient_id=literal_eval(str(string_ingredient_id))
-    print(f'esta sería como cadena enteros {string_ingredient_id}') ##en este punto devuelve como lista de enteros
+    print(f'esta sería como lista enteros {string_ingredient_id}') ##en este punto devuelve como lista de enteros
     print(type(string_ingredient_id))
     #print(body["ingredients"])        
-    body["ingredients"] = string_ingredient_id     ####hasta aquí está bien
+    body["ingredients"] = string_ingredient_id     ####hasta aquí está bien, devolvió lista id de onion y potato
  
+    #ya teniendo la lista de los ID de los ingredientes, faltaría el ID del recipe que estamos por crear, para
+    #meterlo en la tabla relacional, y después de eso, poder registrar el Recipe correctamente.
+
+    last_recipe_id = db.session.query(Recipe).order_by(Recipe.id.desc()).first()
+    #print(f'Este es el último id registrado {last_recipe_id}') #devuelve <Recipe 1>
+    #print(type(last_recipe_id)) #es del tipo models.Recipe
+    last_recipe_id=(last_recipe_id.id)
+    print(f'Este es el último id registrado {last_recipe_id}')
+    print(type(last_recipe_id)) #es del tipo entero!!
+
     new_recipe = Recipe.register(
         body["name"],
         body["description"],
