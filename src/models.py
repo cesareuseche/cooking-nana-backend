@@ -187,9 +187,9 @@ class Ingredient(db.Model):
 
 class Recipeingredients(db.Model):
     __tablename__ = 'recipeingredients'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredient.id'), primary_key=True)
-    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
+    ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredient.id'), primary_key=True, nullable=False)
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), primary_key=True, nullable=False)
     #units = db.Column(db.Numeric(4, 2))
 
     def __init__(self, ingredient_id=None, recipe_id=None):
