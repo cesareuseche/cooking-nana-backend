@@ -351,9 +351,17 @@ def post_recipe():
     #print(f'Este es el último id registrado {last_recipe_id}') #devuelve <Recipe 1>
     #print(type(last_recipe_id)) #es del tipo models.Recipe
     last_recipe_id=(last_recipe_id.id)
-    print(f'Este es el último id registrado {last_recipe_id}')
-    print(type(last_recipe_id)) #es del tipo entero!!
+    #print(f'Este es el último id registrado {last_recipe_id}')
+    #print(type(last_recipe_id)) #es del tipo entero!!
+    new_recipe_id = 1+last_recipe_id
+    #print(new_recipe_id)
 
+    ##Ya teniendo el ID del nuevo recipe a crear y la lista de ID de ingredientes, es hora de registrar en
+    ## la tabla de clase relaciona Recipeingredients
+
+
+
+    ##Registro del nuevo Recipe
     new_recipe = Recipe.register(
         body["name"],
         body["description"],
