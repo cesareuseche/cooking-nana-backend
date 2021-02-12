@@ -190,20 +190,28 @@ class Recipeingredients(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredient.id'), primary_key=True)
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), primary_key=True)
-    units = db.Column(db.Numeric(4, 2))
+    #units = db.Column(db.Numeric(4, 2))
 
-    def __init__(self, ingredient_id=None, units=None, recipe_id=None):
+    def __init__(self, ingredient_id=None, recipe_id=None):
         self.ingredient_id = ingredient_id
-        self.units = units
+        #self.units = units
         self.recipe_id = recipe_id
 
     def __repr__(self):
-        return '<Ingredient: %f units of %s>' % (self.units, self.ingredient_id) 
+        return '<Ingredient: %f >' % (self.ingredient_id) 
+
+    @classmethod
+    def register(cls, ingredient_id, recipe_id):
+        new_relationship = cls(
+            ingredient_id,
+            recipe_id
+        )
+        return new_relationship
 
     def serialize(self):
         return {
             'id' : self.id,
             'ingredient_id' : self.ingredient_id,
             'recipe_id' : self.recipe_id,
-            'units' : self.units
+            #'units' : self.units
         }

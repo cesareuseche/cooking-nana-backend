@@ -358,7 +358,7 @@ def post_recipe():
 
     ##Ya teniendo el ID del nuevo recipe a crear y la lista de ID de ingredientes, es hora de registrar en
     ## la tabla de clase relaciona Recipeingredients
-
+    #new_relationship=
 
 
     ##Registro del nuevo Recipe
