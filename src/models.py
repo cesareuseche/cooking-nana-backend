@@ -108,18 +108,18 @@ class Recipe(db.Model):
             self.ingredients = ingredients
 
     @classmethod
-    def register(cls, name, description, date_published, instructions, tags, likes, score, price, img_url, ingredients):
+    def register(cls, name, description, instructions, tags, img_url, ingredients):
         new_recipe = cls(
             name.lower(),
             description.lower(),
-            date_published,
+            "", #aquí estaría el date_published que se llenará automáticamente
             instructions,
             tags,
-            likes,
-            score,
-            price,
-            #ingredients_received,
+            0,
+            9,
+            99.99,
             img_url,
+            ingredients,
         )
         return new_recipe
 
@@ -158,7 +158,7 @@ class Ingredient(db.Model):
         return '<Ingredient %r>' % (self.name.title())
 
     @classmethod
-    def register(cls, name, category, recipe):
+    def register(cls, name, category):
         new_ingredient = cls(
             name.lower(), 
             category.lower(), 
@@ -189,8 +189,6 @@ class Recipeingredients(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredient.id'), primary_key=True)
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), primary_key=True)
-    # ingredient = db.relationship("Ingredient", uselist=False)
-    # recipes = db.relationship("Recipe", uselist=False)
     units = db.Column(db.Numeric(4, 2))
 
     def __init__(self, ingredient_id=None, units=None, recipe_id=None):
