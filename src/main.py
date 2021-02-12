@@ -373,7 +373,7 @@ def post_recipe():
         recipe_id_list.append(new_recipe_id)
     )
     db.session.add(new_relationship)
-    #db.session.commit()
+    db.session.commit()
 
     ##Registro del nuevo Recipe
     new_list_ingredients=[]

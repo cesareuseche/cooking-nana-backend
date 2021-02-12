@@ -110,6 +110,15 @@ $ git push heroku master
 
 ## Endpoint:
 
+## Edit tables
+
+    Enter in mySQL with: mysql -h localhost -u your_user
+
+    user contact;
+    show tables;
+    ALTER TABLE recipeingredients MODIFY id int NOT NULL AUTO_INCREMENT;
+
+
 ### /register
 
     This is a POST endpoint, so you will need:
