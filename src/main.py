@@ -260,6 +260,18 @@ def get_recipe_id(user_id):
         }), 404
 
 
+##Se definirá una función de búsqueda, qué según el id de un ingrediente
+##devuelva una lista con los id de las recetas asociadas:
+def get_id_Recipes_from_Ingredient_id(ingredient_ids):
+    return Recipe.query.\
+        join(Recipeingredients).\
+        filter(Recipeingredients.ingredient_id.in_(ingredient_ids)).\
+        group_by(Recipe.id).\
+        having(db.func.count(Recipeingredients.ingredient_id.distinct()) ==
+               len(set(ingredient_ids))).\
+        all()
+
+
 @app.route('/recipes', methods=['POST'])
 def post_recipe():
     """
@@ -292,7 +304,16 @@ def post_recipe():
             "response": "empty property values"
         }), 400
 
-    
+    obtained_ingredients_id=[]
+    ingredients_body = body["ingredients"]
+    #print(get_id_Recipes_from_Ingredient_id(ingredients_body))
+    for individual_ingredient in ingredients_body:
+        if (
+        #Para obtener el id del ingrediente si el nombre del mismo aparece en el body    
+        individual_ingredient == db.session.query(Ingredient.id).filter_by(name=individual_ingredient).first()):
+            obtained_ingredients_id.append(individual_ingredient)
+            print(obtained_ingredients_id)
+    body["ingredients"] = obtained_ingredients_id       
     #new_recipe = Recipe("name","description","","instructions","tags",23,9,0,"url","")
     #new_recipe = Recipe(None,None,None,None,None,None,None,None,None,None)
     new_recipe = Recipe.register(
