@@ -362,20 +362,20 @@ def post_recipe():
     # #print(new_recipe_id)
 
     #Suponemos que del body llega una lista [onion, potato] de ingredientes, tal que:
-    ingredients_body = body["ingredients"]
+    #ingredients_body = body["ingredients"]
     recipe=[]
     for individual_ingredient in ingredients_body:
         if (
         individual_ingredient != Ingredient.query.filter_by(name=body["name"]).first()):
             #print(f'este es el for individdual {individual_ingredient}')
-            recipe.append(new_recipe_id)
+            #recipe.append(new_recipe_id)
             category="a"
-            match = db.session.query(Ingredient.id).filter_by(name=individual_ingredient).first()
-            print(f'esto sería el match {match}')
+            match = db.session.query(Ingredient.name).filter_by(name=individual_ingredient).first()
+            print(f'esto sería el match {match} y el ingredient {individual_ingredient}')
 
             new_ingredient = Ingredient.register(
-                match,
-                category,
+                individual_ingredient,
+                "none",
                 recipe        
             )
     db.session.add(new_ingredient)
