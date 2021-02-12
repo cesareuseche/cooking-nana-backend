@@ -97,7 +97,7 @@ class Recipe(db.Model):
     def __init__(self, name, description, date_published, instructions, tags, likes, score, price, img_url, ingredients):
             self.name = name
             self.description = description
-            self.date_published = datetime.now(timezone.utc)
+            self.date_published = datetime.strptime(date_published, '%Y-%m-%dT%H:%M')
             self.instructions = instructions
             self.tags = tags
             self.likes = likes
@@ -108,11 +108,11 @@ class Recipe(db.Model):
             self.ingredients = ingredients
 
     @classmethod
-    def register(cls, name, description, instructions, tags, img_url, ingredients):
+    def register(cls, name, description, date_published, instructions, tags, img_url, ingredients):
         new_recipe = cls(
             name.lower(),
             description.lower(),
-            "", #aquí estaría el date_published que se llenará automáticamente
+            date_published, #aquí estaría el date_published que se llenará automáticamente
             instructions,
             tags,
             0,
