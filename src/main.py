@@ -363,15 +363,19 @@ def post_recipe():
 
     ##Ya teniendo el ID del nuevo recipe a crear y la lista de ID de ingredientes, es hora de registrar en
     ## la tabla de clase relaciona Recipeingredients
+    integer_ingredient_id=string_ingredient_id
     recipe_id_list=[]
+    ingredients_list=[]
+
     new_relationship = Recipeingredients.register(
-        str(body["ingredients"]).replace("'[]'",""),
+        ingredients_list.append(integer_ingredient_id),
         recipe_id_list.append(new_recipe_id)
     )
     db.session.add(new_relationship)
-    db.session.commit()
+    #db.session.commit()
 
     ##Registro del nuevo Recipe
+    new_list_ingredients=[]
     new_recipe = Recipe.register(
         body["name"],
         body["description"],
@@ -381,7 +385,7 @@ def post_recipe():
         #body["price"],
         #body["score"],
         body["img_url"],
-        body["ingredients"]
+        integer_ingredient_id #atributo "ingredients":"[]"
     )
     db.session.add(new_recipe)
     db.session.commit()
