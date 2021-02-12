@@ -367,12 +367,16 @@ def post_recipe():
     for individual_ingredient in ingredients_body:
         if (
         individual_ingredient != Ingredient.query.filter_by(name=body["name"]).first()):
+            #print(f'este es el for individdual {individual_ingredient}')
             recipe.append(new_recipe_id)
             category="a"
+            match = db.session.query(Ingredient.id).filter_by(name=individual_ingredient).first()
+            print(f'esto sería el match {match}')
+
             new_ingredient = Ingredient.register(
-            individual_ingredient,
-            category,
-            recipe,        
+                match,
+                category,
+                recipe        
             )
     db.session.add(new_ingredient)
     db.session.commit()

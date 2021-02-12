@@ -164,8 +164,8 @@ class Ingredient(db.Model):
     def register(cls, name, category, recipe):
         new_ingredient = cls(
             name.lower(), 
-            category.lower(), 
-            recipe
+            category, 
+            recipe,
         )
         return new_ingredient
     
