@@ -401,11 +401,8 @@ def post_recipe():
             individual_ingredient,
             "none",        
             )
-            try:
-                db.session.add(new_ingredient)
-                db.session.commit()
-            except Exception as error:
-                db.session.rollback()
+            db.session.add(new_ingredient)
+            
     
     try:
         db.session.commit()
