@@ -110,6 +110,17 @@ $ git push heroku master
 
 ## Endpoint:
 
+### Edit tables
+
+    Enter in mySQL with: mysql -h localhost -u your_user
+
+    drop database contact;
+    create database contact;    (remember pipenv run migrate and pipenv run upgrade after create)
+    use contact;
+    show tables;
+    ALTER TABLE recipeingredients MODIFY id int NOT NULL AUTO_INCREMENT;
+    exit
+
 ### /register
 
     This is a POST endpoint, so you will need:

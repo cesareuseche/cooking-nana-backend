@@ -361,6 +361,27 @@ def post_recipe():
     # new_recipe_id = 1+last_recipe_id
     # #print(new_recipe_id)
 
+    #Suponemos que del body llega una lista [onion, potato] de ingredientes, tal que:
+    #ingredients_body = body["ingredients"]
+    recipe=[]
+    for individual_ingredient in ingredients_body:
+        if (
+        individual_ingredient != Ingredient.query.filter_by(name=body["name"]).first()):
+            #print(f'este es el for individdual {individual_ingredient}')
+            #recipe.append(new_recipe_id)
+            category="a"
+            match = db.session.query(Ingredient.name).filter_by(name=individual_ingredient).first()
+            print(f'esto sería el match {match} y el ingredient {individual_ingredient}')
+
+            new_ingredient = Ingredient.register(
+                individual_ingredient,
+                "none",
+                recipe        
+            )
+    db.session.add(new_ingredient)
+    db.session.commit()
+
+
     ##Ya teniendo el ID del nuevo recipe a crear y la lista de ID de ingredientes, es hora de registrar en
     ## la tabla de clase relaciona Recipeingredients
     integer_ingredient_id=string_ingredient_id
@@ -373,7 +394,7 @@ def post_recipe():
         recipe_id_list.append(new_recipe_id)
     )
     db.session.add(new_relationship)
-    #db.session.commit()
+    db.session.commit()
 
     ##Registro del nuevo Recipe
     new_list_ingredients=[]
@@ -390,19 +411,6 @@ def post_recipe():
     )
     db.session.add(new_recipe)
     #db.session.commit()
-
-    #Suponemos que del body llega una lista [onion, potato] de ingredientes, tal que:
-    ingredients_body = body["ingredients"]
-    for individual_ingredient in ingredients_body:
-        if (
-        individual_ingredient != Ingredient.query.filter_by(name=body["name"]).first()):
-            
-            new_ingredient = Ingredient.register(
-            individual_ingredient,
-            "none",        
-            )
-            db.session.add(new_ingredient)
-            
     
     try:
         db.session.commit()
