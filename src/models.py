@@ -107,6 +107,9 @@ class Recipe(db.Model):
             self.img_url = img_url
             self.ingredients = ingredients
 
+    def __repr__(self):
+        return '<Recipe %r>' % (self.name.title())
+
     @classmethod
     def register(cls, name, description, date_published, instructions, tags, img_url, ingredients):
         new_recipe = cls(
@@ -198,7 +201,7 @@ class Recipeingredients(db.Model):
         self.recipe_id = recipe_id
 
     def __repr__(self):
-        return '<Ingredient: %f >' % (self.ingredient_id) 
+        return '<Recipeingredients: %f >' % (self.ingredient_id) 
 
     @classmethod
     def register(cls, ingredient_id, recipe_id):
