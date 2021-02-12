@@ -202,7 +202,7 @@ $ git push heroku master
     "instructions":"Some instructions of how to cook",
     "tags":"tags will help to find recipe",
   	"img_url":"test",
-  	"ingredients":"onion",
+  	"ingredients":"[onion, potato]",
   	"date_published":"2021-02-20T14:04"
     }
 
