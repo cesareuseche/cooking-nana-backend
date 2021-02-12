@@ -315,6 +315,31 @@ def post_recipe():
     #print(type (ingredients_body))
     # Converting string to list 
     ingredients_body = ingredients_body.strip('][').split(', ')
+
+    recipe=[]
+    for individual_ingredient in ingredients_body:
+        
+        #print(f'este es el for individdual {individual_ingredient}')
+        #recipe.append(new_recipe_id)
+        category="a"
+        match = db.session.query(Ingredient.name).filter_by(name=individual_ingredient).first()
+        print(f'esto sería el match {match} y el ingredient {individual_ingredient}')
+
+        new_ingredient = Ingredient.register(
+            individual_ingredient,
+            "none",
+            recipe        
+        )
+        db.session.add(new_ingredient)
+        try:
+            db.session.commit()
+        except Exception as error:
+            db.session.rollback()
+    ################################Hasta este punto está funcionando
+
+
+
+
     #print(type (ingredients_body))
     for individual_ingredient in ingredients_body:
         print(type (individual_ingredient))
@@ -364,26 +389,8 @@ def post_recipe():
 
     #Suponemos que del body llega una lista [onion, potato] de ingredientes, tal que:
     #ingredients_body = body["ingredients"]
-    recipe=[]
-    for individual_ingredient in ingredients_body:
-        
-        #print(f'este es el for individdual {individual_ingredient}')
-        #recipe.append(new_recipe_id)
-        category="a"
-        match = db.session.query(Ingredient.name).filter_by(name=individual_ingredient).first()
-        print(f'esto sería el match {match} y el ingredient {individual_ingredient}')
-
-        new_ingredient = Ingredient.register(
-            individual_ingredient,
-            "none",
-            recipe        
-        )
-        db.session.add(new_ingredient)
-        try:
-            db.session.commit()
-        except Exception as error:
-            db.session.rollback()
-    ################################Hasta este punto está funcionando
+    ####################################################################################
+    
 
     ##Ya teniendo el ID del nuevo recipe a crear y la lista de ID de ingredientes, es hora de registrar en
     ## la tabla de clase relaciona Recipeingredients
