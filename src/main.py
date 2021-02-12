@@ -292,10 +292,8 @@ def post_recipe():
             "response": "empty property values"
         }), 400
 
-    #body["score"]= None
-    #body["price"]= None
     
-    new_recipe = Recipe("name","description","","instructions","tags",23,9,0,"url","")
+    #new_recipe = Recipe("name","description","","instructions","tags",23,9,0,"url","")
     #new_recipe = Recipe(None,None,None,None,None,None,None,None,None,None)
     new_recipe = Recipe.register(
         body["name"],
@@ -305,9 +303,25 @@ def post_recipe():
         body["tags"],
         #body["price"],
         #body["score"],
-        body["img_url"]
+        body["img_url"],
+        body["ingredients"]
     )
     db.session.add(new_recipe)
+    #Suponemos que del body llega una lista [onion, potato] de ingredientes, tal que:
+    ingredients_body = body["ingredients"]
+    for individual_ingredient in ingredients_body:
+        if (
+        individual_ingredient == Ingredient.query.filter_by(name=body["name"]).first()):
+            obtained_ingredient.append(individual_ingredient)
+        else:
+            new_ingredient = Ingredient.register(individual_ingredient, "", Recipeingredients.query.order_by(Recipeingredients.recipe_id.desc()).first())
+            db.session.add(new_ingredient)
+            obtained_ingredient.append(individual_ingredient)
+            try:
+                db.session.commit()
+            except Exception as error:
+                db.session.rollback()
+    
     try:
         db.session.commit()
         return jsonify(new_recipe.serialize()), 201

@@ -158,10 +158,11 @@ class Ingredient(db.Model):
         return '<Ingredient %r>' % (self.name.title())
 
     @classmethod
-    def register(cls, name, category):
+    def register(cls, name, category, recipe):
         new_ingredient = cls(
             name.lower(), 
             category.lower(), 
+            recipe
         )
         return new_ingredient
     
