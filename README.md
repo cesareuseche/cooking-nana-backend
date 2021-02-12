@@ -197,12 +197,13 @@ $ git push heroku master
     When this endpoint is used with POST method, data should be as:
 
     {
-        "description":"Description of the recipe",
-        "name":"Name of recipe",
-        "instructions":"Some instructions of how to cook",
-        "tags":"tags will help to find recipe",
-        "price":"this property could be null",
-        "img_url":"add url of recipe's image"
+    "description":"Description of the recipe",
+    "name":"Name of recipe",
+    "instructions":"Some instructions of how to cook",
+    "tags":"tags will help to find recipe",
+  	"img_url":"test",
+  	"ingredients":"onion",
+  	"date_published":"2021-02-20T14:04"
     }
 
 ### /recipes/<int:position>

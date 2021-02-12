@@ -13,6 +13,8 @@ from flask_jwt_extended import (
 JWTManager, jwt_required, create_access_token, get_jwt_identity
 )
 from werkzeug.security import safe_str_cmp, generate_password_hash, check_password_hash
+from datetime import datetime
+
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -258,6 +260,18 @@ def get_recipe_id(user_id):
         }), 404
 
 
+##Se definirá una función de búsqueda, qué según el id de un ingrediente
+##devuelva una lista con los id de las recetas asociadas:
+def get_id_Recipes_from_Ingredient_id(ingredient_ids):
+    return Recipe.query.\
+        join(Recipeingredients).\
+        filter(Recipeingredients.ingredient_id.in_(ingredient_ids)).\
+        group_by(Recipe.id).\
+        having(db.func.count(Recipeingredients.ingredient_id.distinct()) ==
+               len(set(ingredient_ids))).\
+        all()
+
+
 @app.route('/recipes', methods=['POST'])
 def post_recipe():
     """
@@ -274,7 +288,6 @@ def post_recipe():
         "name" not in body or
         "instructions" not in body or
         "tags" not in body or
-        "price" not in body or
         "img_url" not in body 
     ):
         return jsonify({
@@ -285,23 +298,51 @@ def post_recipe():
         body["name"] == "" or
         body["instructions"] == "" or
         body["tags"] == "" or
-        body["price"] == "" or
         body["img_url"] == ""
     ):
         return jsonify({
             "response": "empty property values"
         }), 400
 
-    new_user = Recipe.register(
-        body["description"],
+    obtained_ingredients_id=[]
+    ingredients_body = body["ingredients"]
+    #print(get_id_Recipes_from_Ingredient_id(ingredients_body))
+    for individual_ingredient in ingredients_body:
+        if (
+        #Para obtener el id del ingrediente si el nombre del mismo aparece en el body    
+        individual_ingredient == db.session.query(Ingredient.id).filter_by(name=individual_ingredient).first()):
+            obtained_ingredients_id.append(individual_ingredient)
+            print(obtained_ingredients_id)
+    body["ingredients"] = obtained_ingredients_id       
+    #new_recipe = Recipe("name","description","","instructions","tags",23,9,0,"url","")
+    #new_recipe = Recipe(None,None,None,None,None,None,None,None,None,None)
+    new_recipe = Recipe.register(
         body["name"],
+        body["description"],
+        body["date_published"],
         body["instructions"],
         body["tags"],
-        body["price"],
+        #body["price"],
+        #body["score"],
         body["img_url"],
-        
+        body["ingredients"]
     )
     db.session.add(new_recipe)
+    #Suponemos que del body llega una lista [onion, potato] de ingredientes, tal que:
+    ingredients_body = body["ingredients"]
+    for individual_ingredient in ingredients_body:
+        if (
+        individual_ingredient == Ingredient.query.filter_by(name=body["name"]).first()):
+            obtained_ingredient.append(individual_ingredient)
+        else:
+            new_ingredient = Ingredient.register(individual_ingredient, "", Recipeingredients.query.order_by(Recipeingredients.recipe_id.desc()).first())
+            db.session.add(new_ingredient)
+            obtained_ingredient.append(individual_ingredient)
+            try:
+                db.session.commit()
+            except Exception as error:
+                db.session.rollback()
+    
     try:
         db.session.commit()
         return jsonify(new_recipe.serialize()), 201
