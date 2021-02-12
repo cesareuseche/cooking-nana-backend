@@ -339,11 +339,39 @@ def post_recipe():
     print(f'esta sería como cadena string {string_ingredient_id}') ##en este punto los id quedan [1,2] pero strings
     #string_ingredient_id = list(map(int, string_ingredient_id))
     string_ingredient_id=literal_eval(str(string_ingredient_id))
-    print(f'esta sería como cadena enteros {string_ingredient_id}') ##en este punto devuelve como lista de enteros
+    print(f'esta sería como lista enteros {string_ingredient_id}') ##en este punto devuelve como lista de enteros
     print(type(string_ingredient_id))
     #print(body["ingredients"])        
-    body["ingredients"] = string_ingredient_id     ####hasta aquí está bien
+    body["ingredients"] = string_ingredient_id     ####hasta aquí está bien, devolvió lista id de onion y potato
  
+    #ya teniendo la lista de los ID de los ingredientes, faltaría el ID del recipe que estamos por crear, para
+    #meterlo en la tabla relacional, y después de eso, poder registrar el Recipe correctamente.
+    if(db.session.query(Recipe).order_by(Recipe.id.desc()).first()):
+        last_recipe_id = db.session.query(Recipe).order_by(Recipe.id.desc()).first()
+        last_recipe_id=(last_recipe_id.id)
+        new_recipe_id = 1+last_recipe_id
+    else: 
+        last_recipe_id = 0
+        new_recipe_id = 1
+    # #print(f'Este es el último id registrado {last_recipe_id}') #devuelve <Recipe 1>
+    # #print(type(last_recipe_id)) #es del tipo models.Recipe
+    # last_recipe_id=(last_recipe_id.id)
+    # #print(f'Este es el último id registrado {last_recipe_id}')
+    # #print(type(last_recipe_id)) #es del tipo entero!!
+    # new_recipe_id = 1+last_recipe_id
+    # #print(new_recipe_id)
+
+    ##Ya teniendo el ID del nuevo recipe a crear y la lista de ID de ingredientes, es hora de registrar en
+    ## la tabla de clase relaciona Recipeingredients
+    recipe_id_list=[]
+    new_relationship = Recipeingredients.register(
+        str(body["ingredients"]).replace("'[]'",""),
+        recipe_id_list.append(new_recipe_id)
+    )
+    db.session.add(new_relationship)
+    db.session.commit()
+
+    ##Registro del nuevo Recipe
     new_recipe = Recipe.register(
         body["name"],
         body["description"],
@@ -356,6 +384,8 @@ def post_recipe():
         body["ingredients"]
     )
     db.session.add(new_recipe)
+    db.session.commit()
+
     #Suponemos que del body llega una lista [onion, potato] de ingredientes, tal que:
     ingredients_body = body["ingredients"]
     for individual_ingredient in ingredients_body:
