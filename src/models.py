@@ -17,7 +17,7 @@ class Contact(db.Model):
     name = db.Column(db.String(120), nullable=False)
     last_name = db.Column(db.String(120), nullable=False)
     username = db.Column(db.String(20), unique=True, nullable=False)
-    password_hash = db.Column(db.String(250), nullable=False)
+    password_hash = db.Column(db.String(250))
     salt = db.Column(db.String(16), nullable=False)
     status = db.Column(db.Boolean(), nullable=False)
 
