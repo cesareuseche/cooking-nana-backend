@@ -110,6 +110,17 @@ $ git push heroku master
 
 ## Endpoint:
 
+### Edit tables
+
+    Enter in mySQL with: mysql -h localhost -u your_user
+
+    drop database contact;
+    create database contact;    (remember pipenv run migrate and pipenv run upgrade after create)
+    use contact;
+    show tables;
+    ALTER TABLE recipeingredients MODIFY id int NOT NULL AUTO_INCREMENT;
+    exit
+
 ### /register
 
     This is a POST endpoint, so you will need:
@@ -183,12 +194,8 @@ $ git push heroku master
 
     This could be used as GET endpoint, you will obtain a list o all ingredients.
 
-    When this endpoint is used with POST method, data should be as:
-
-    {
-        "name":"name of ingredient",
-        "category":"category of ingredient"
-    }
+    When this endpoint is used with POST method will be acting automatically inside of
+    /recipes endpoint
 
 ### /recipes
 
@@ -204,6 +211,24 @@ $ git push heroku master
   	"img_url":"test",
   	"ingredients":"[onion, potato]",
   	"date_published":"2021-02-20T14:04"
+    }
+
+    It will create necesary ingredients of recipes automatically.
+
+    At the moment, response body will be something like:
+
+    {
+    "date_published": "Sat, 20 Feb 2021 14:04:00 GMT",
+    "description": "description of the recipe",
+    "id": 11,
+    "img_url": "test",
+    "ingredients": [],
+    "instructions": "Some instructions of how to cook",
+    "likes": 0,
+    "name": "Name of recipe",
+    "price": 99.99,
+    "score": 9,
+    "tags": "tags will help to find recipe"
     }
 
 ### /recipes/<int:position>

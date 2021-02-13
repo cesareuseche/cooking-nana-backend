@@ -107,6 +107,9 @@ class Recipe(db.Model):
             self.img_url = img_url
             self.ingredients = ingredients
 
+    def __repr__(self):
+        return '<Recipe %r>' % (self.name.title())
+
     @classmethod
     def register(cls, name, description, date_published, instructions, tags, img_url, ingredients):
         new_recipe = cls(
@@ -161,8 +164,8 @@ class Ingredient(db.Model):
     def register(cls, name, category, recipe):
         new_ingredient = cls(
             name.lower(), 
-            category.lower(), 
-            recipe
+            category, 
+            recipe,
         )
         return new_ingredient
     
@@ -187,9 +190,9 @@ class Ingredient(db.Model):
 
 class Recipeingredients(db.Model):
     __tablename__ = 'recipeingredients'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredient.id'), primary_key=True)
-    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
+    ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredient.id'), primary_key=True, nullable=False)
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), primary_key=True, nullable=False)
     #units = db.Column(db.Numeric(4, 2))
 
     def __init__(self, ingredient_id=None, recipe_id=None):
@@ -198,7 +201,7 @@ class Recipeingredients(db.Model):
         self.recipe_id = recipe_id
 
     def __repr__(self):
-        return '<Ingredient: %f >' % (self.ingredient_id) 
+        return '<Recipeingredients: %f >' % (self.name.title()) 
 
     @classmethod
     def register(cls, ingredient_id, recipe_id):

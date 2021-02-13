@@ -316,6 +316,31 @@ def post_recipe():
     #print(type (ingredients_body))
     # Converting string to list 
     ingredients_body = ingredients_body.strip('][').split(', ')
+
+    recipe=[]
+    for individual_ingredient in ingredients_body:
+        
+        #print(f'este es el for individdual {individual_ingredient}')
+        #recipe.append(new_recipe_id)
+        category="a"
+        match = db.session.query(Ingredient.name).filter_by(name=individual_ingredient).first()
+        print(f'esto sería el match {match} y el ingredient {individual_ingredient}')
+
+        new_ingredient = Ingredient.register(
+            individual_ingredient,
+            "none",
+            recipe        
+        )
+        db.session.add(new_ingredient)
+        try:
+            db.session.commit()
+        except Exception as error:
+            db.session.rollback()
+    ################################Hasta este punto está funcionando
+
+
+
+
     #print(type (ingredients_body))
     for individual_ingredient in ingredients_body:
         print(type (individual_ingredient))
@@ -333,6 +358,7 @@ def post_recipe():
     #print(f'esta sería como cadena{string_ingredient_id}')
     string_ingredient_id = string_ingredient_id.strip('()')
     string_ingredient_id = string_ingredient_id.replace(')(',"")
+    string_ingredient_id = string_ingredient_id.replace(')',"")
     if(string_ingredient_id[-1]==","):
         string_ingredient_id=string_ingredient_id.rstrip(string_ingredient_id[-1])
     #print(f'esta sería como cadena recortada {string_ingredient_id}') ##en este punto los id quedan: 1,2
@@ -362,20 +388,17 @@ def post_recipe():
     # new_recipe_id = 1+last_recipe_id
     # #print(new_recipe_id)
 
+    #Suponemos que del body llega una lista [onion, potato] de ingredientes, tal que:
+    #ingredients_body = body["ingredients"]
+    ####################################################################################
+    
+
     ##Ya teniendo el ID del nuevo recipe a crear y la lista de ID de ingredientes, es hora de registrar en
     ## la tabla de clase relaciona Recipeingredients
     integer_ingredient_id=string_ingredient_id
-    recipe_id_list=[]
-    ingredients_list=[]
+    
 
-    #Registro clase intermedia Recipeingredients
-    new_relationship = Recipeingredients.register(
-        ingredients_list.append(integer_ingredient_id),
-        recipe_id_list.append(new_recipe_id)
-    )
-    db.session.add(new_relationship)
-    #db.session.commit()
-
+    empty_list=[]
     ##Registro del nuevo Recipe
     new_list_ingredients=[]
     new_recipe = Recipe.register(
@@ -387,24 +410,26 @@ def post_recipe():
         #body["price"],
         #body["score"],
         body["img_url"],
-        body["ingredients"] #atributo "ingredients":"[]"
+        empty_list #atributo "ingredients":"[]"
     )
     db.session.add(new_recipe)
     #db.session.commit()
-
-    #Suponemos que del body llega una lista [onion, potato] de ingredientes, tal que:
-    ingredients_body = body["ingredients"]
-    for individual_ingredient in ingredients_body:
-        if (
-        individual_ingredient != Ingredient.query.filter_by(name=body["name"]).first()):
-            
-            new_ingredient = Ingredient.register(
-            individual_ingredient,
-            "none",        
-            )
-            db.session.add(new_ingredient)
-            
     
+    recipe_id_list=[]
+    ingredients_list=[]
+
+    #Registro clase intermedia Recipeingredients######################################
+    new_relationship = Recipeingredients.register(
+        #ingredients_list.append(integer_ingredient_id),
+        #recipe_id_list.append(new_recipe_id)
+        ingredients_list,
+        recipe_id_list
+    )
+    #db.session.add(new_relationship)
+    #db.session.commit()
+    #################################################################################
+
+
     try:
         db.session.commit()
         return jsonify(new_recipe.serialize()), 201
