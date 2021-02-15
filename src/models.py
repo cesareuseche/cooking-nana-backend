@@ -217,4 +217,4 @@ class Recipeingredients(db.Model):
             'ingredient_id' : self.ingredient_id,
             'recipe_id' : self.recipe_id,
             #'units' : self.units
-        }
+        }   #[i.serialize() for i in self.ingredients]

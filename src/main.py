@@ -89,6 +89,7 @@ def post_user():
         "POST": registrar un usuario y devolverlo
     """
     body = request.json
+    print(request.get_json())
     if body is None:
         return jsonify({
             "response": "empty body"
