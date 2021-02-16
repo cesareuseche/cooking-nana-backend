@@ -419,14 +419,17 @@ def post_recipe():
     ingredients_list=[]
 
     #Registro clase intermedia Recipeingredients######################################
-    new_relationship = Recipeingredients.register(
-        #ingredients_list.append(integer_ingredient_id),
-        #recipe_id_list.append(new_recipe_id)
-        ingredients_list,
-        recipe_id_list
-    )
-    #db.session.add(new_relationship)
-    #db.session.commit()
+    for counter in integer_ingredient_id:
+        new_relationship = Recipeingredients.register(
+            counter,
+            new_recipe_id
+        )
+        db.session.add(new_relationship)
+        try:
+            db.session.commit()
+        except Exception as error:
+            db.session.rollback()
+            print(f"{error.args} {type(error)}")
     #################################################################################
 
 
