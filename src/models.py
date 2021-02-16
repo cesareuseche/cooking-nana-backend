@@ -93,8 +93,9 @@ class Recipe(db.Model):
     ##la propiedad ingredients debe revisarse para que se relacione con otra tabla many-to-many
     #ingredients_received = db.relationship("Ingredient", backref="receiver", foreign_keys="Ingredient.recipes")
     ingredients = db.relationship("Recipeingredients", backref="recipe")
+    ingredients_used = db.Column(db.String(1000), unique=False, nullable=True)
 
-    def __init__(self, name, description, date_published, instructions, tags, likes, score, price, img_url, ingredients):
+    def __init__(self, name, description, date_published, instructions, tags, likes, score, price, img_url, ingredients, ingredients_used):
             self.name = name
             self.description = description
             self.date_published = datetime.strptime(date_published, '%Y-%m-%dT%H:%M')
@@ -106,12 +107,13 @@ class Recipe(db.Model):
             #self.ingredients_received = ingredients_recived
             self.img_url = img_url
             self.ingredients = ingredients
+            self.ingredients_used = ingredients_used
 
     def __repr__(self):
         return '<Recipe %r>' % (self.name.title())
 
     @classmethod
-    def register(cls, name, description, date_published, instructions, tags, img_url, ingredients):
+    def register(cls, name, description, date_published, instructions, tags, img_url, ingredients, ingredients_used):
         new_recipe = cls(
             name.lower(),
             description.lower(),
@@ -123,6 +125,7 @@ class Recipe(db.Model):
             99.99,
             img_url,
             ingredients,
+            ingredients_used
         )
         return new_recipe
 
@@ -141,7 +144,7 @@ class Recipe(db.Model):
             'price': self.price,
             #'ingredients_recived' : self.received_ingredients_list_serialize,
             'img_url' : self.img_url,
-            'ingredients' : db.session.query(Recipe.ingredients).filter_by(id=self.id).first()
+            'ingredients_used' : self.ingredients_used
         }
     
     def serializeFinal(self, new_recipe_id, ingredients_body):
@@ -157,7 +160,7 @@ class Recipe(db.Model):
             'price': db.session.query(Recipe.price).filter_by(id=new_recipe_id).first(),
             #'ingredients_recived' : self.received_ingredients_list_serialize,
             'img_url' : db.session.query(Recipe.img_url).filter_by(id=new_recipe_id).first(),
-            'ingredients_used' : ingredients_body
+            'ingredients_used' : self.ingredients_used
         }
 
 class Ingredient(db.Model):

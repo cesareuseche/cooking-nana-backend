@@ -42,6 +42,13 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
+def list_to_string(lista_to_convert):
+    a = lista_to_convert
+    b = "[" + ", ".join(map(str, a)) + "]"
+    print(f'esta es la lista convertida {b}')
+    return b
+
+
 #A diferencia de obtener una lista de contactos
 #ahora la meta es verificar cada usuario que hace login de 
 #manera individual coincida su password con username
@@ -413,7 +420,8 @@ def post_recipe():
         #body["price"],
         #body["score"],
         body["img_url"],
-        empty_list #but integer or may be sqlalchemy object 
+        empty_list, #but integer or may be sqlalchemy object
+        list_to_string(ingredients_body) 
     )
     db.session.add(new_recipe)
     db.session.commit()
@@ -434,7 +442,7 @@ def post_recipe():
     try:
         #db.session.commit()
         recipes = db.session.query(Recipe).filter_by(id=new_recipe_id).all()
-        recipes_serialize = list(map(lambda recipe: recipe.serializeFinal(new_recipe_id, ingredients_body), recipes))
+        recipes_serialize = list(map(lambda recipe: recipe.serializeFinal(new_recipe_id, list_to_string(ingredients_body)), recipes))
         return jsonify(recipes_serialize), 200
 
         #final_recipe_json = show_recipe_json(new_recipe_id, ingredients_body)
