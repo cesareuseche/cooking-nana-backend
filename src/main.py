@@ -89,7 +89,11 @@ def post_user():
         "POST": registrar un usuario y devolverlo
     """
     body = request.json
+<<<<<<< HEAD
     print(body)
+=======
+    print(request.get_json())
+>>>>>>> 4b7f97dd4c5e47efacbc517e0b5159992c1934e5
     if body is None:
         return jsonify({
             "response": "empty body"
@@ -395,9 +399,10 @@ def post_recipe():
 
     ##Ya teniendo el ID del nuevo recipe a crear y la lista de ID de ingredientes, es hora de registrar en
     ## la tabla de clase relaciona Recipeingredients
-    integer_ingredient_id=string_ingredient_id
-    
-
+    integer_ingredient_id=string_ingredient_id # it's a List
+    print(f'This is integer_ingredient_id {integer_ingredient_id} and type:')
+    print(type(integer_ingredient_id))
+   
     empty_list=[]
     ##Registro del nuevo Recipe
     new_list_ingredients=[]
@@ -410,35 +415,42 @@ def post_recipe():
         #body["price"],
         #body["score"],
         body["img_url"],
-        empty_list #atributo "ingredients":"[]"
+        empty_list #but integer or may be sqlalchemy object 
     )
     db.session.add(new_recipe)
-    #db.session.commit()
+    db.session.commit()
     
     recipe_id_list=[]
     ingredients_list=[]
 
     #Registro clase intermedia Recipeingredients######################################
-    new_relationship = Recipeingredients.register(
-        #ingredients_list.append(integer_ingredient_id),
-        #recipe_id_list.append(new_recipe_id)
-        ingredients_list,
-        recipe_id_list
-    )
-    #db.session.add(new_relationship)
-    #db.session.commit()
-    #################################################################################
-
-
-    try:
+    for counter in integer_ingredient_id:
+        new_relationship = Recipeingredients.register(
+            counter,
+            new_recipe_id
+        )
+        print(counter)
+        db.session.add(new_relationship)
         db.session.commit()
-        return jsonify(new_recipe.serialize()), 201
+    try:
+        #db.session.commit()
+        return jsonify({"response":f"creo la tabla relacional"}), 200
     except Exception as error:
         db.session.rollback()
         print(f"{error.args} {type(error)}")
-        return jsonify({
-            "response": f"{error.args}"
-        }), 500
+        return jsonify({"response":f"error en tabla relacional"}), 500
+    #################################################################################
+
+
+    # try:
+    #     db.session.commit()
+    #     return jsonify(new_recipe.serialize()), 201
+    # except Exception as error:
+    #     db.session.rollback()
+    #     print(f"{error.args} {type(error)}")
+    #     return jsonify({
+    #         "response": f"{error.args}"
+    #     }), 500
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

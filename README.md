@@ -118,7 +118,7 @@ $ git push heroku master
     create database contact;    (remember pipenv run migrate and pipenv run upgrade after create)
     use contact;
     show tables;
-    ALTER TABLE recipeingredients MODIFY id int NOT NULL AUTO_INCREMENT;
+    ALTER TABLE recipeingredients MODIFY id int NOT NULL AUTO_INCREMENT; (parece ya no ser necesario este paso)
     exit
 
 ### /register
