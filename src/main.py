@@ -425,26 +425,28 @@ def post_recipe():
             counter,
             new_recipe_id
         )
-        print(type(counter))
+        print(counter)
         db.session.add(new_relationship)
         db.session.commit()
-        # try:
-        #     return db.session.commit()
-        # except Exception as error:
-        #     db.session.rollback()
-        #     print(f"{error.args} {type(error)}")
+        try:
+            db.session.commit()
+            return jsonify({"response":f"creo la tabla relacional"}), 200
+        except Exception as error:
+            db.session.rollback()
+            print(f"{error.args} {type(error)}")
+            return jsonify({"response":f"error en tabla relacional"}), 500
     #################################################################################
 
 
-    try:
-        db.session.commit()
-        return jsonify(new_recipe.serialize()), 201
-    except Exception as error:
-        db.session.rollback()
-        print(f"{error.args} {type(error)}")
-        return jsonify({
-            "response": f"{error.args}"
-        }), 500
+    # try:
+    #     db.session.commit()
+    #     return jsonify(new_recipe.serialize()), 201
+    # except Exception as error:
+    #     db.session.rollback()
+    #     print(f"{error.args} {type(error)}")
+    #     return jsonify({
+    #         "response": f"{error.args}"
+    #     }), 500
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
