@@ -237,7 +237,19 @@ $ git push heroku master
 
     This is a GET endpoint, you will need enter the recipe id to obtain data
 
-
+    {
+    "date_published": "Sat, 20 Feb 2021 14:04:00 GMT", 
+    "description": "description of the recipe3", 
+    "id": 3, 
+    "img_url": "test", 
+    "ingredients_used": "[onion, potato, rice, tomato]", 
+    "instructions": "Some instructions of how to cook", 
+    "likes": 0, 
+    "name": "name of recipe3", 
+    "price": 99.99, 
+    "score": 9, 
+    "tags": "tags will help to find recipe"
+    }
 
 ## Other
 
