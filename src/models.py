@@ -141,7 +141,23 @@ class Recipe(db.Model):
             'price': self.price,
             #'ingredients_recived' : self.received_ingredients_list_serialize,
             'img_url' : self.img_url,
-            'ingredients' : self.ingredients
+            'ingredients' : db.session.query(Recipe.ingredients).filter_by(id=self.id).first()
+        }
+    
+    def serializeFinal(self, new_recipe_id, ingredients_body):
+        return {
+            'id' : db.session.query(Recipe.id).filter_by(id=new_recipe_id).first(),
+            'name' : db.session.query(Recipe.name).filter_by(id=new_recipe_id).first(),
+            'description' : db.session.query(Recipe.description).filter_by(id=new_recipe_id).first(),
+            'date_published' : db.session.query(Recipe.date_published).filter_by(id=new_recipe_id).first(),
+            'instructions' : db.session.query(Recipe.instructions).filter_by(id=new_recipe_id).first(),
+            'tags' : db.session.query(Recipe.tags).filter_by(id=new_recipe_id).first(),
+            'likes' : db.session.query(Recipe.likes).filter_by(id=new_recipe_id).first(),
+            'score': db.session.query(Recipe.score).filter_by(id=new_recipe_id).first(),
+            'price': db.session.query(Recipe.price).filter_by(id=new_recipe_id).first(),
+            #'ingredients_recived' : self.received_ingredients_list_serialize,
+            'img_url' : db.session.query(Recipe.img_url).filter_by(id=new_recipe_id).first(),
+            'ingredients_used' : ingredients_body
         }
 
 class Ingredient(db.Model):

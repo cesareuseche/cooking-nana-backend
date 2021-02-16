@@ -255,7 +255,7 @@ def get_recipes():
     return jsonify(recipes_serialize), 200
 
 @app.route('/recipes/<recipe_id>', methods=['GET'])
-def get_recipe_id(user_id):
+def get_recipe_id(recipe_id):
     """ buscar y regresar una receta en especifico """
     recipe = Recipe.query.get(recipe_id)
     if isinstance(recipe, Recipe):
@@ -421,6 +421,7 @@ def post_recipe():
     recipe_id_list=[]
     ingredients_list=[]
 
+
     #Registro clase intermedia Recipeingredients######################################
     for counter in integer_ingredient_id:
         new_relationship = Recipeingredients.register(
@@ -432,7 +433,12 @@ def post_recipe():
         db.session.commit()
     try:
         #db.session.commit()
-        return jsonify({"response":f"creo la tabla relacional"}), 200
+        recipes = db.session.query(Recipe).filter_by(id=new_recipe_id).all()
+        recipes_serialize = list(map(lambda recipe: recipe.serializeFinal(new_recipe_id, ingredients_body), recipes))
+        return jsonify(recipes_serialize), 200
+
+        #final_recipe_json = show_recipe_json(new_recipe_id, ingredients_body)
+        #return final_recipe_json, 200
     except Exception as error:
         db.session.rollback()
         print(f"{error.args} {type(error)}")
@@ -440,15 +446,9 @@ def post_recipe():
     #################################################################################
 
 
-    # try:
-    #     db.session.commit()
-    #     return jsonify(new_recipe.serialize()), 201
-    # except Exception as error:
-    #     db.session.rollback()
-    #     print(f"{error.args} {type(error)}")
-    #     return jsonify({
-    #         "response": f"{error.args}"
-    #     }), 500
+    
+
+
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
