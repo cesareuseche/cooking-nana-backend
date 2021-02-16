@@ -395,9 +395,10 @@ def post_recipe():
 
     ##Ya teniendo el ID del nuevo recipe a crear y la lista de ID de ingredientes, es hora de registrar en
     ## la tabla de clase relaciona Recipeingredients
-    integer_ingredient_id=string_ingredient_id
-    
-
+    integer_ingredient_id=string_ingredient_id # it's a List
+    print(f'This is integer_ingredient_id {integer_ingredient_id} and type:')
+    print(type(integer_ingredient_id))
+   
     empty_list=[]
     ##Registro del nuevo Recipe
     new_list_ingredients=[]
@@ -410,10 +411,10 @@ def post_recipe():
         #body["price"],
         #body["score"],
         body["img_url"],
-        empty_list #atributo "ingredients":"[]"
+        empty_list #but integer or may be sqlalchemy object 
     )
     db.session.add(new_recipe)
-    #db.session.commit()
+    db.session.commit()
     
     recipe_id_list=[]
     ingredients_list=[]
@@ -424,12 +425,14 @@ def post_recipe():
             counter,
             new_recipe_id
         )
+        print(type(counter))
         db.session.add(new_relationship)
-        try:
-            db.session.commit()
-        except Exception as error:
-            db.session.rollback()
-            print(f"{error.args} {type(error)}")
+        db.session.commit()
+        # try:
+        #     return db.session.commit()
+        # except Exception as error:
+        #     db.session.rollback()
+        #     print(f"{error.args} {type(error)}")
     #################################################################################
 
 
