@@ -428,13 +428,13 @@ def post_recipe():
         print(counter)
         db.session.add(new_relationship)
         db.session.commit()
-        try:
-            db.session.commit()
-            return jsonify({"response":f"creo la tabla relacional"}), 200
-        except Exception as error:
-            db.session.rollback()
-            print(f"{error.args} {type(error)}")
-            return jsonify({"response":f"error en tabla relacional"}), 500
+    try:
+        #db.session.commit()
+        return jsonify({"response":f"creo la tabla relacional"}), 200
+    except Exception as error:
+        db.session.rollback()
+        print(f"{error.args} {type(error)}")
+        return jsonify({"response":f"error en tabla relacional"}), 500
     #################################################################################
 
 
