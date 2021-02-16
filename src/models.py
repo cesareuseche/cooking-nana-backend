@@ -201,7 +201,7 @@ class Recipeingredients(db.Model):
         self.recipe_id = recipe_id
 
     def __repr__(self):
-        return '<Recipeingredients: %f >' % (self.name.title()) 
+        return '<Recipeingredients: %f >' % (self.ingredient_id) 
 
     @classmethod
     def register(cls, ingredient_id, recipe_id):
