@@ -492,7 +492,7 @@ def search_recipe():
         #category="a"
         #Primero obtenemos los ID de cada ingrediente
         match = db.session.query(Ingredient.id).filter_by(name=individual_ingredient).first()
-        print(f'esto sería el match {match}')
+        print(f'esto sería el match con id de ingredientes {match}')
         
         #match es del tipo sqlalchemy, de debe pasar a un entero
         obtained_ingredients_id.append(match)
@@ -509,15 +509,62 @@ def search_recipe():
         #string_ingredient_id = list(map(int, string_ingredient_id))
         string_ingredient_id=literal_eval(str(string_ingredient_id))
         print(f'{string_ingredient_id} and type {type(string_ingredient_id)}') #en este punto es un entero
-        
+        if (isinstance(string_ingredient_id, tuple)):
+            string_ingredient_id = list(string_ingredient_id)
         #Ahora se tratan de buscar los ID de las recetas que coinciden con los id de los ingredientes
         #match2 = Recipe.id.query.join(recipeingredients).join(Ingredient).filter((recipeingredients.c.ingredient_id == string_ingredient_id)).all()
-        match2 = db.session.query(Recipe.id).filter(Recipeingredients.ingredient_id == Ingredient.id).filter(Ingredient.id == string_ingredient_id).filter(Recipe.ingredients.any(ingredient_id = string_ingredient_id)).all()
-        result_search.append(match2)
-        print(f'esto sería el resultado recipe ID {result_search}')
+        if (isinstance(string_ingredient_id, int)):
+            match2 = db.session.query(Recipe.id).filter(Recipeingredients.ingredient_id == Ingredient.id).filter(Ingredient.id == string_ingredient_id).filter(Recipe.ingredients.any(ingredient_id = string_ingredient_id)).all()
+            result_search.append(match2)
+        else: 
+            print("***For del else****")   
+            for individual_ingredient2 in string_ingredient_id:
+                match2 = db.session.query(Recipe.id).filter(Recipeingredients.ingredient_id == Ingredient.id).filter(Ingredient.id == individual_ingredient2).filter(Recipe.ingredients.any(ingredient_id = individual_ingredient2)).all()
+                result_search.append(match2)
+            print(f'esto sería el resultado recipe ID {result_search}')
 
+    #aquí transforma la lista de objetos sqlalchemy.result a algo tangible list string
+    recipes_id="".join(map(str, result_search))
+    recipes_id = recipes_id.strip('()')
+    #print(recipes_id)
+    recipes_id = recipes_id.replace(')(',"")
+    #print(recipes_id)
+    recipes_id = recipes_id.replace(')',"")
+    #print(recipes_id)
+    recipes_id = recipes_id.replace(')',"")
+    recipes_id = recipes_id.replace('(',"")
+    recipes_id = recipes_id.replace(',,',",")
+    recipes_id = recipes_id.replace(',]',"]")
+    recipes_id = recipes_id.replace('][',"],[")
+    print(recipes_id)
+    if(recipes_id[-1]==","):
+          recipes_id = recipes_id.rstrip(recipes_id[-1])
+    if(recipes_id[-1]==","):
+          recipes_id = recipes_id.rstrip(recipes_id[-1])      
+    recipes_id_list = literal_eval(str(recipes_id)) 
+
+    #eliminación de duplicados
+    def delete_dupe(list_here):
+        print('aplicando la eliminación de duplicados')
+        result=[]
+        for item in list_here:
+            if item not in result:
+                result.append(item)
+        return result
+    
+    if (isinstance(recipes_id_list, list)==False):
+        print('es lista')
+        recipes_id_list = delete_dupe(recipes_id_list)
+        new_list=[]    
+        for items in recipes_id_list:
+            item_new = delete_dupe(items)
+            new_list.append(item_new)
+    else:
+        new_list = recipes_id_list
+
+    print(new_list)
     return jsonify({
-            "response": result_search
+            "response": new_list
         }), 200
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
