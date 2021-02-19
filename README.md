@@ -251,6 +251,24 @@ $ git push heroku master
     "tags": "tags will help to find recipe"
     }
 
+### /search
+
+    This is a POST endpoint, you will need enter the ingredients name (no matter if uppercase, or lowercase) to obtain ID of recipes where those ingredients are beeing used.
+
+    {
+	"search": "[rice, arugula]"   
+    }
+
+    if everything is correct, you will get:
+
+    {
+    "response": [
+                    [1,2,3],
+                    [4]
+                ]
+    }
+
+    After that, you can use /recipes/<int:position> endpoint to obtain the specific recipe
 ## Other
 
 ### [🙎‍♂️ About us]
