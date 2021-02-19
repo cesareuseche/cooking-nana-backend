@@ -1,0 +1,93 @@
+[
+  {
+    "date_published": "Thu, 18 Feb 2021 16:51:00 GMT", 
+    "description": "recipe 1 description", 
+    "id": 1, 
+    "img_url": "test", 
+    "ingredients_used": "[chicken, potato, tomato, onion]", 
+    "instructions": "Some instructions of how to cook", 
+    "likes": 0, 
+    "name": "chicken to vincent", 
+    "price": 99.99, 
+    "score": 9, 
+    "tags": "tags will help to find recipe"
+  }, 
+  {
+    "date_published": "Thu, 18 Feb 2021 16:53:00 GMT", 
+    "description": "recipe 2 description", 
+    "id": 2, 
+    "img_url": "test", 
+    "ingredients_used": "[meat, chips, rice, onion]", 
+    "instructions": "Some instructions of how to cook", 
+    "likes": 0, 
+    "name": "meat to cesar", 
+    "price": 99.99, 
+    "score": 9, 
+    "tags": "tags will help to find recipe"
+  }, 
+  {
+    "date_published": "Thu, 18 Feb 2021 16:55:00 GMT", 
+    "description": "recipe 3 description", 
+    "id": 3, 
+    "img_url": "test", 
+    "ingredients_used": "[water]", 
+    "instructions": "Some instructions of how to cook", 
+    "likes": 0, 
+    "name": "water to humbi", 
+    "price": 99.99, 
+    "score": 9, 
+    "tags": "tags will help to find recipe"
+  }, 
+  {
+    "date_published": "Thu, 18 Feb 2021 16:56:00 GMT", 
+    "description": "recipe 4 description", 
+    "id": 4, 
+    "img_url": "test", 
+    "ingredients_used": "[cheese, sugar, milk, egg]", 
+    "instructions": "Some instructions of how to cook", 
+    "likes": 0, 
+    "name": "cheese cake to ernesto", 
+    "price": 99.99, 
+    "score": 9, 
+    "tags": "tags will help to find recipe"
+  }, 
+  {
+    "date_published": "Thu, 18 Feb 2021 17:12:00 GMT", 
+    "description": "recipe 6 description", 
+    "id": 5, 
+    "img_url": "test", 
+    "ingredients_used": "[cheese, meat, bread, tomato, onion]", 
+    "instructions": "Some instructions of how to cook", 
+    "likes": 0, 
+    "name": "fancy pants burguer to deimian", 
+    "price": 99.99, 
+    "score": 9, 
+    "tags": "tags will help to find recipe"
+  }, 
+  {
+    "date_published": "Thu, 18 Feb 2021 17:12:00 GMT", 
+    "description": "what to do when your 8-year old nephew comes to visit? make pizza, of course! well, not of course, actually. i didn't think of it until we exhausted.", 
+    "id": 6, 
+    "img_url": "test", 
+    "ingredients_used": "[Extra virgin olive oil, Cornmeal, Tomato sauce, mozzarella cheese, Fontina cheese, Parmesan cheese, Feta cheese, Mushroom, Bell peppers, pepperoncini, Italian sausage, black olive, arugula, Pesto, onion, ham]", 
+    "instructions": "Proof the yeast Place the warm water in the ntil the yeast is...", 
+    "likes": 0, 
+    "name": "homemade pizza", 
+    "price": 99.99, 
+    "score": 9, 
+    "tags": "tags will help to find recipe"
+  }, 
+  {
+    "date_published": "Sat, 20 Feb 2021 14:04:00 GMT", 
+    "description": "garlic butter rice is the perfect side for any meal.  it\u2019s full of flavor; buttery, garlicky \u2013 and so good you can eat it plain!", 
+    "id": 7, 
+    "img_url": "test", 
+    "ingredients_used": "[cloves garlic, canola, butter, white rice, chicken broth, cup scallions, salt, white pepper]", 
+    "instructions": "Heat oil in a large saucepan over medium heat. Add garlic slices and saute, moving constantly, until golden and crisp. Transfer to paper towels to drain.Pour out excess oil then return to the stove.Add 2 tablespoons butter. Once melted, add garlic. Cook for 1 \u00bd minutes or until the garlic starts to turn light golden and the butter is well infused with garlic flavour.Add rice, stir to coat in garlic butter.Add broth, place lid on saucepan. Bring to simmer then immediately turn down to medium low.Cook for 12 \u2013 15 minutes or until liquid is all absorbed by the rice. Tilt saucepan to check.Remove from stove but leave lid on. Rest for 10 minutes.Fluff with fork, transfer into serving bowl. Stir through remaining butter and scallions, or garnish as per photos. Sprinkle with crispy garlic, salt, and pepper. Serve.", 
+    "likes": 0, 
+    "name": "garlic butter rice", 
+    "price": 99.99, 
+    "score": 9, 
+    "tags": "tags will help to find recipe"
+  }
+]

@@ -288,7 +288,7 @@ def get_id_Recipes_from_Ingredient_id(ingredient_ids):
 @app.route('/recipes', methods=['POST'])
 def post_recipe():
     """
-        "POST": registrar un usuario y devolverlo
+        "POST": registrar una receta y devolverla
     """
     body = request.json
     if body is None:
@@ -453,11 +453,72 @@ def post_recipe():
         return jsonify({"response":f"error en tabla relacional"}), 500
     #################################################################################
 
+@app.route('/search', methods=['POST'])
+def search_recipe():
 
+    body = request.json
+    if body is None:
+        return jsonify({
+            "response": "empty body"
+        }), 400
+
+    if (
+        "search" not in body 
+    ):
+        return jsonify({
+            "response": "Missing property search"
+        }), 400
+    if(
+        body["search"] == "" or
+        body["search"] == "[]"
+    ):
+        return jsonify({
+            "response": "empty property value"
+        }), 400  
+
+    ingredients_body = json.dumps(request.json["search"])
+    ingredients_body = literal_eval(ingredients_body)
     
+    #print(type (ingredients_body))
+    # Converting string to list 
+    ingredients_body = ingredients_body.strip('][').split(', ')
+    print(f'{ingredients_body} and type {type(ingredients_body)}')
+    recipe=[]
+    result_search=[]
+    obtained_ingredients_id=[]
+    for individual_ingredient in ingredients_body:
+        individual_ingredient.lower()
+        print(individual_ingredient)
+        #category="a"
+        #Primero obtenemos los ID de cada ingrediente
+        match = db.session.query(Ingredient.id).filter_by(name=individual_ingredient).first()
+        print(f'esto sería el match {match}')
+        
+        #match es del tipo sqlalchemy, de debe pasar a un entero
+        obtained_ingredients_id.append(match)
+        string_ingredient_id="".join(map(str, obtained_ingredients_id))
+        #print(f'esta sería como cadena{string_ingredient_id}')
+        string_ingredient_id = string_ingredient_id.strip('()')
+        string_ingredient_id = string_ingredient_id.replace(')(',"")
+        string_ingredient_id = string_ingredient_id.replace(')',"")
+        if(string_ingredient_id[-1]==","):
+          string_ingredient_id=string_ingredient_id.rstrip(string_ingredient_id[-1])
+        #print(f'esta sería como cadena recortada {string_ingredient_id}') ##en este punto los id quedan: 1,2
+        string_ingredient_id=string_ingredient_id
+        print(f'esta sería como cadena string {string_ingredient_id}') ##en este punto los id quedan [1,2] pero strings
+        #string_ingredient_id = list(map(int, string_ingredient_id))
+        string_ingredient_id=literal_eval(str(string_ingredient_id))
+        print(f'{string_ingredient_id} and type {type(string_ingredient_id)}') #en este punto es un entero
+        
+        #Ahora se tratan de buscar los ID de las recetas que coinciden con los id de los ingredientes
+        #match2 = Recipe.id.query.join(recipeingredients).join(Ingredient).filter((recipeingredients.c.ingredient_id == string_ingredient_id)).all()
+        match2 = db.session.query(Recipe.id).filter(Recipeingredients.ingredient_id == Ingredient.id).filter(Ingredient.id == string_ingredient_id).filter(Recipe.ingredients.any(ingredient_id = string_ingredient_id)).all()
+        result_search.append(match2)
+        print(f'esto sería el resultado recipe ID {result_search}')
 
-
-
+    return jsonify({
+            "response": result_search
+        }), 200
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 8080))
