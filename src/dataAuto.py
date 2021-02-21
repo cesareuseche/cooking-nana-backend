@@ -14,7 +14,7 @@ API_ENDPOINT = "http://localhost:8080/recipes"
     # Aquí va el código que genera los diccionarios
 source_ingredients = ["onion", "tomato", "rice", "beef", "chiken", "turkey", "pork", "partridge", "keema", "crab", "ham", "kidney meat", "mutton", "chops", "rocket leaves", "drumstick", "kaffir lime", "plantain", "cherry", "cherry tomatoes", "turnip", "gourd", "pimiento", "spinach", "onion", "mustard leaves", "radish", "amaranth", "flour", "oats", "jowar", "muesli", "tapioca", "semolina", "buckwheat", "green gram", "bengal gram", "kidney beans", "gruyere cheese", "gouda cheese", "milk", "feta cheese", "brie cheese", "cream cheese", "ricotta cheese", "parmesan cheese", "blue cheese", "cheedar cheese", "mascarpone cheese", "cream", "mozzarella cheese", "yogurt", "eggs", "salt", "sugar", "butter"]
 
-for x in range (0,50): #el último número no se incluye en el For
+for x in range (1,21): #el último número no se incluye en el For
     sample_list = random.choices(source_ingredients, k=random.choice(range(1, len(source_ingredients))))
     #sample_list= [1]
     #print(sample_list)

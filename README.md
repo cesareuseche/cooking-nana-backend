@@ -278,7 +278,8 @@ $ git push heroku master
 
     `python dataAuto.py`
 
-    it will send 49 recipes with random ingredients to /recipes endpoint.
+    it will send 21 recipes with random ingredients to /recipes endpoint.
+    Could take some time.
 
 ### [🙎‍♂️ About us]
 
