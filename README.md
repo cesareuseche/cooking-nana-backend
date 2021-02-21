@@ -271,6 +271,15 @@ $ git push heroku master
     After that, you can use /recipes/<int:position> endpoint to obtain the specific recipe
 ## Other
 
+### Script to populate database automatically for test (DATABASE MUST BE EMPTY)
+    
+    To run this test, just navigate to folder: ./src/  
+    Then apply this command:
+
+    `python dataAuto.py`
+
+    it will send 49 recipes with random ingredients to /recipes endpoint.
+
 ### [🙎‍♂️ About us]
 
 We are making this API as part of back-end of our final 4Geeks Academy Fullstack course project.
