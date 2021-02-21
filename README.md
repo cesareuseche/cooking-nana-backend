@@ -249,7 +249,7 @@ $ git push heroku master
     "description": "description of the recipe3", 
     "id": 3, 
     "img_url": "test", 
-    "ingredients_used": "[onion, potato, rice, tomato]", 
+    "ingredients_used": "['onion', 'potato', 'rice', 'tomato']", 
     "instructions": "Some instructions of how to cook", 
     "likes": 0, 
     "name": "name of recipe3", 
@@ -263,7 +263,7 @@ $ git push heroku master
     This is a POST endpoint, you will need enter the ingredients name (no matter if uppercase, or lowercase) to obtain ID of recipes where those ingredients are beeing used.
 
     {
-	"search": "[rice, arugula]"   
+	"search": "['rice', 'arugula']"   
     }
 
     if everything is correct, you will get:
