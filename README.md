@@ -20,7 +20,14 @@
 The following steps are automatically runned withing gitpod, if you are doing a local installation you have to do them manually:
 
 -Need to install: `python3 -m pip install flask-jwt-extended`
+
 `pipenv install flask-jwt-extended`
+
+`pip3 install requests`
+
+`python3 -m pip install pandas`
+
+`python3 -m pip install requests`
 
 ```sh
 pipenv install;
