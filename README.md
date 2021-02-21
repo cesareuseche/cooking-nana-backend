@@ -242,7 +242,7 @@ $ git push heroku master
     "description": "description of the recipe3", 
     "id": 3, 
     "img_url": "test", 
-    "ingredients_used": "[onion, potato, rice, tomato]", 
+    "ingredients_used": "['onion', 'potato', 'rice', 'tomato']", 
     "instructions": "Some instructions of how to cook", 
     "likes": 0, 
     "name": "name of recipe3", 
