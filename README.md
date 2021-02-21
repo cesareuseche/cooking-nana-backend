@@ -209,7 +209,7 @@ $ git push heroku master
     "instructions":"Some instructions of how to cook",
     "tags":"tags will help to find recipe",
   	"img_url":"test",
-  	"ingredients":"[onion, potato]",
+  	"ingredients":"['onion', 'potato']",
   	"date_published":"2021-02-20T14:04"
     }
 
@@ -223,7 +223,7 @@ $ git push heroku master
         "description": ["description of the recipe3"],
         "id": [3],
         "img_url": ["test"],
-        "ingredients_used": "[onion, potato, rice, tomato]",
+        "ingredients_used": "['onion', 'potato', 'rice', 'tomato']",
         "instructions": ["Some instructions of how to cook"],
         "likes": [0],
         "name": ["name of recipe3"],
