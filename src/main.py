@@ -494,11 +494,11 @@ def search_recipe():
     obtained_ingredients_id=[]
     for individual_ingredient in ingredients_body:
         individual_ingredient.lower()
-        just_ingredient = "\""+individual_ingredient+"\""
+        #just_ingredient = "\""+individual_ingredient+"\""
         print(individual_ingredient)
         #category="a"
         #Primero obtenemos los ID de cada ingrediente
-        match = db.session.query(Ingredient.id).filter_by(name=just_ingredient).first()
+        match = db.session.query(Ingredient.id).filter_by(name=individual_ingredient).first()
         print(f'esto sería el match con id de ingredientes {match}')
         
         #match es del tipo sqlalchemy, de debe pasar a un entero

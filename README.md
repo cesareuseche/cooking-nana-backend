@@ -216,7 +216,7 @@ $ git push heroku master
     "instructions":"Some instructions of how to cook",
     "tags":"tags will help to find recipe",
   	"img_url":"test",
-  	"ingredients":"['onion', 'potato']",
+  	"ingredients": ["onion", "rice"],
   	"date_published":"2021-02-20T14:04"
     }
 
@@ -226,17 +226,17 @@ $ git push heroku master
 
     [
         {
-        "date_published": ["Sat, 20 Feb 2021 14:04:00 GMT"],
-        "description": ["description of the recipe3"],
-        "id": [3],
-        "img_url": ["test"],
-        "ingredients_used": "['onion', 'potato', 'rice', 'tomato']",
-        "instructions": ["Some instructions of how to cook"],
-        "likes": [0],
-        "name": ["name of recipe3"],
-        "price": [99.99],
-        "score": [9],
-        "tags": ["tags will help to find recipe"]
+        "date_published": "Sat, 20 Feb 2021 14:04:00 GMT", 
+        "description": "description of the recipe test", 
+        "id": 21, 
+        "img_url": "test", 
+        "ingredients_used": "[onion, rice]", 
+        "instructions": "Some instructions of how to cook", 
+        "likes": 0, 
+        "name": "name of recipe test", 
+        "price": 99.99, 
+        "score": 9, 
+        "tags": "tags will help to find recipe"
         }
     ]
 
