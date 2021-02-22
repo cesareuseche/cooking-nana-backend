@@ -18,6 +18,7 @@ import json
 from io import StringIO
 from ast import literal_eval
 import re
+import requests
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
