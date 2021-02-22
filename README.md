@@ -263,7 +263,7 @@ $ git push heroku master
     This is a POST endpoint, you will need enter the ingredients name (no matter if uppercase, or lowercase) to obtain ID of recipes where those ingredients are beeing used.
 
     {
-	"search": ["rice", "onion"]  
+    "search":["onion","rice"]
     }
 
     if everything is correct, you will get:
