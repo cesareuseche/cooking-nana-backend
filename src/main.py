@@ -320,12 +320,12 @@ def post_recipe():
 
     obtained_ingredients_id=[]
     ingredients_body=[]
-    ingredients_body = json.dumps(request.json["ingredients"])
-    ingredients_body = literal_eval(ingredients_body)
+    ingredients_body = body["ingredients"]
+    #ingredients_body = literal_eval(ingredients_body)
     
     #print(type (ingredients_body))
     # Converting string to list 
-    ingredients_body = ingredients_body.strip('][').split(', ')
+    #ingredients_body = ingredients_body.strip('][').split(', ')
 
     recipe=[]
     for individual_ingredient in ingredients_body:
@@ -481,8 +481,9 @@ def search_recipe():
             "response": "empty property value"
         }), 400  
 
-    ingredients_body = json.dumps(request.json["search"])
-    ingredients_body = literal_eval(ingredients_body)
+    # ingredients_body = json.dumps(request.json["search"])
+    # ingredients_body = literal_eval(ingredients_body)
+    ingredients_body = body['search']
     print(ingredients_body)
     #print(type (ingredients_body))
     # Converting string to list 

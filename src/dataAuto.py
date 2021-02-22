@@ -24,7 +24,7 @@ for x in range (1,21): #el último número no se incluye en el For
             "instructions":"Some Random instructions generated number "+str(x),
             "tags":"tags will help to find recipe",
             "img_url":"https://picsum.photos/200/300",
-            "ingredients":str(sample_list),
+            "ingredients": sample_list,
             "date_published":str(z.year)+"-"+str(z.strftime("%m"))+"-"+str(z.strftime("%d"))+"T"+str(z.strftime("%H"))+":"+str(z.strftime("%M"))
             } 
     print(datab)
