@@ -334,9 +334,10 @@ def post_recipe():
         category="a"
         match = db.session.query(Ingredient.name).filter_by(name=individual_ingredient).first()
         print(f'esto sería el match {match} y el ingredient {individual_ingredient}')
-
+        ######
+        just_ingredient = individual_ingredient.replace('\'',"\"")
         new_ingredient = Ingredient.register(
-            individual_ingredient,
+            just_ingredient,
             "none",
             recipe        
         )
@@ -354,8 +355,9 @@ def post_recipe():
     for individual_ingredient in ingredients_body:
         print(type (individual_ingredient))
         print(individual_ingredient)
+        just_ingredient = individual_ingredient.replace('\'',"\"")
         #Para obtener el id del ingrediente si el nombre del mismo aparece en el body    
-        match = db.session.query(Ingredient.id).filter_by(name=individual_ingredient).first()
+        match = db.session.query(Ingredient.id).filter_by(name=just_ingredient).first()
         print(f'esto sería el match {match}')
         print(type(match))
         obtained_ingredients_id.append(match)
@@ -374,6 +376,7 @@ def post_recipe():
     string_ingredient_id="["+string_ingredient_id+"]"
     print(f'esta sería como cadena string {string_ingredient_id}') ##en este punto los id quedan [1,2] pero strings
     #string_ingredient_id = list(map(int, string_ingredient_id))
+    print(f'línea 378 {string_ingredient_id}')
     string_ingredient_id=literal_eval(str(string_ingredient_id))
     print(f'esta sería como lista enteros {string_ingredient_id}') ##en este punto devuelve como lista de enteros
     print(type(string_ingredient_id))
@@ -457,6 +460,7 @@ def post_recipe():
 def search_recipe():
 
     body = request.json
+    print(body)
     if body is None:
         return jsonify({
             "response": "empty body"
@@ -470,7 +474,7 @@ def search_recipe():
         }), 400
     if(
         body["search"] == "" or
-        body["search"] == "[]"
+        body["search"] == []
     ):
         return jsonify({
             "response": "empty property value"
@@ -478,20 +482,21 @@ def search_recipe():
 
     ingredients_body = json.dumps(request.json["search"])
     ingredients_body = literal_eval(ingredients_body)
-    
+    print(ingredients_body)
     #print(type (ingredients_body))
     # Converting string to list 
-    ingredients_body = ingredients_body.strip('][').split(', ')
-    print(f'{ingredients_body} and type {type(ingredients_body)}')
+    #ingredients_body = ingredients_body.strip('][').split(', ')
+    #print(f'{ingredients_body} and type {type(ingredients_body)}')
     recipe=[]
     result_search=[]
     obtained_ingredients_id=[]
     for individual_ingredient in ingredients_body:
         individual_ingredient.lower()
+        just_ingredient = "\""+individual_ingredient+"\""
         print(individual_ingredient)
         #category="a"
         #Primero obtenemos los ID de cada ingrediente
-        match = db.session.query(Ingredient.id).filter_by(name=individual_ingredient).first()
+        match = db.session.query(Ingredient.id).filter_by(name=just_ingredient).first()
         print(f'esto sería el match con id de ingredientes {match}')
         
         #match es del tipo sqlalchemy, de debe pasar a un entero
@@ -505,10 +510,10 @@ def search_recipe():
           string_ingredient_id=string_ingredient_id.rstrip(string_ingredient_id[-1])
         #print(f'esta sería como cadena recortada {string_ingredient_id}') ##en este punto los id quedan: 1,2
         string_ingredient_id=string_ingredient_id
-        print(f'esta sería como cadena string {string_ingredient_id}') ##en este punto los id quedan [1,2] pero strings
+        #print(f'esta sería como cadena string {string_ingredient_id}') ##en este punto los id quedan [1,2] pero strings
         #string_ingredient_id = list(map(int, string_ingredient_id))
         string_ingredient_id=literal_eval(str(string_ingredient_id))
-        print(f'{string_ingredient_id} and type {type(string_ingredient_id)}') #en este punto es un entero
+        #print(f'{string_ingredient_id} and type {type(string_ingredient_id)}') #en este punto es un entero
         if (isinstance(string_ingredient_id, tuple)):
             string_ingredient_id = list(string_ingredient_id)
         #Ahora se tratan de buscar los ID de las recetas que coinciden con los id de los ingredientes
@@ -517,11 +522,11 @@ def search_recipe():
             match2 = db.session.query(Recipe.id).filter(Recipeingredients.ingredient_id == Ingredient.id).filter(Ingredient.id == string_ingredient_id).filter(Recipe.ingredients.any(ingredient_id = string_ingredient_id)).all()
             result_search.append(match2)
         else: 
-            print("***For del else****")   
+            #print("***For del else****")   
             for individual_ingredient2 in string_ingredient_id:
                 match2 = db.session.query(Recipe.id).filter(Recipeingredients.ingredient_id == Ingredient.id).filter(Ingredient.id == individual_ingredient2).filter(Recipe.ingredients.any(ingredient_id = individual_ingredient2)).all()
                 result_search.append(match2)
-            print(f'esto sería el resultado recipe ID {result_search}')
+            print(f'esto sería el resultado recipe ID {result_search} y tipo {type(result_search)}')
 
     #aquí transforma la lista de objetos sqlalchemy.result a algo tangible list string
     recipes_id="".join(map(str, result_search))
