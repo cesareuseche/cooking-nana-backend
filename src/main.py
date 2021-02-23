@@ -500,14 +500,14 @@ def search_recipe():
         #Primero obtenemos los ID de cada ingrediente
         match = db.session.query(Ingredient.id).filter_by(name=individual_ingredient).first()
         print(f'esto sería el match con id de ingredientes {match}')
-        if (match==None):
+        if (match is None):
             match=0
         #match es del tipo sqlalchemy, de debe pasar a un entero
         obtained_ingredients_id.append(match)
         string_ingredient_id="".join(map(str, obtained_ingredients_id))
         #print(f'esta sería como cadena{string_ingredient_id}')
         string_ingredient_id = string_ingredient_id.strip('()')
-        string_ingredient_id = string_ingredient_id.replace(')(',"")
+        string_ingredient_id = string_ingredient_id.replace('(',",")
         string_ingredient_id = string_ingredient_id.replace(')',"")
         if(string_ingredient_id[-1]==","):
           string_ingredient_id=string_ingredient_id.rstrip(string_ingredient_id[-1])
@@ -523,11 +523,15 @@ def search_recipe():
         #match2 = Recipe.id.query.join(recipeingredients).join(Ingredient).filter((recipeingredients.c.ingredient_id == string_ingredient_id)).all()
         if (isinstance(string_ingredient_id, int)):
             match2 = db.session.query(Recipe.id).filter(Recipeingredients.ingredient_id == Ingredient.id).filter(Ingredient.id == string_ingredient_id).filter(Recipe.ingredients.any(ingredient_id = string_ingredient_id)).all()
+            if(match2 is None):
+                match2=0
             result_search.append(match2)
         else: 
             #print("***For del else****")   
             for individual_ingredient2 in string_ingredient_id:
                 match2 = db.session.query(Recipe.id).filter(Recipeingredients.ingredient_id == Ingredient.id).filter(Ingredient.id == individual_ingredient2).filter(Recipe.ingredients.any(ingredient_id = individual_ingredient2)).all()
+                if(match2 is None):
+                    match2=0
                 result_search.append(match2)
             print(f'esto sería el resultado recipe ID {result_search} y tipo {type(result_search)}')
 
