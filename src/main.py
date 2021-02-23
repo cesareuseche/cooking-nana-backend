@@ -575,9 +575,15 @@ def search_recipe():
     else:
         new_list = recipes_id_list
 
-    print(new_list)
+    final_list=[]
+    for item in new_list:
+        for items in item:
+            if (items is not None):
+                final_list.append(items)
+
+    print(final_list)
     return jsonify({
-            "response": new_list
+            "response": final_list
         }), 200
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
