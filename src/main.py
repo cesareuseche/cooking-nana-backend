@@ -509,6 +509,7 @@ def search_recipe():
         string_ingredient_id = string_ingredient_id.strip('()')
         string_ingredient_id = string_ingredient_id.replace('(',",")
         string_ingredient_id = string_ingredient_id.replace(')',"")
+        string_ingredient_id = string_ingredient_id.replace(',,',",")
         if(string_ingredient_id[-1]==","):
           string_ingredient_id=string_ingredient_id.rstrip(string_ingredient_id[-1])
         #print(f'esta sería como cadena recortada {string_ingredient_id}') ##en este punto los id quedan: 1,2
