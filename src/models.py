@@ -195,7 +195,7 @@ class Ingredient(db.Model):
             'id' : self.id,
             'name' : self.name,
             'category' : self.category,
-            'recipe' : self.recipe,
+            #'recipe' : self.recipe,
         }
 
 

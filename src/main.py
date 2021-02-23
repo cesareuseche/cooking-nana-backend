@@ -202,7 +202,7 @@ def handle_login():
 @app.route("/ingredients", methods=["GET"])
 def get_ingredients():
     ingredients = Ingredient.query.all()
-    ingredients_serialize = list(map(lambda ingredient: ingredient.serialize(), ingredients)) 
+    ingredients_serialize = list(map(lambda ingredient: ingredient.serializeIngredient(), ingredients)) 
     return jsonify(ingredients_serialize), 200
 
 @app.route("/ingredients", methods=["POST"])
