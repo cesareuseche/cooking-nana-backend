@@ -576,14 +576,29 @@ def search_recipe():
         new_list = recipes_id_list
 
     final_list=[]
+    counter=[]
     for item in new_list:
         for items in item:
             if (items is not None):
                 final_list.append(items)
+                counter.append(final_list.count(items))
+
+    for k in range(len(final_list)-1):
+        for x in range(len(final_list)-k-1):
+            if counter[x]<counter[x+1]:
+                aux1=counter[x]
+                counter[x]=counter[x+1]
+                counter[x+1]=aux1
+                aux2=final_list[x]
+                final_list[x]=final_list[x+1]
+                final_list[x+1]=aux2
 
     print(final_list)
     return jsonify({
-            "response": final_list
+            "all_id_list": final_list,
+            "id_counter": final_list,
+            "no_dupe_id_list": delete_dupe(final_list),
+            "bestmatch":final_list[0]
         }), 200
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
