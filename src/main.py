@@ -595,10 +595,7 @@ def search_recipe():
 
     print(final_list)
     return jsonify({
-            "all_id_list": final_list,
-            "id_counter": final_list,
-            "no_dupe_id_list": delete_dupe(final_list),
-            "bestmatch":final_list[0]
+            "no_dupe_id_list": delete_dupe(final_list)
         }), 200
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
