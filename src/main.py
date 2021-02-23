@@ -500,7 +500,8 @@ def search_recipe():
         #Primero obtenemos los ID de cada ingrediente
         match = db.session.query(Ingredient.id).filter_by(name=individual_ingredient).first()
         print(f'esto sería el match con id de ingredientes {match}')
-        
+        if (match==None):
+            match=0
         #match es del tipo sqlalchemy, de debe pasar a un entero
         obtained_ingredients_id.append(match)
         string_ingredient_id="".join(map(str, obtained_ingredients_id))
