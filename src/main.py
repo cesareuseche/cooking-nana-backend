@@ -19,6 +19,7 @@ from io import StringIO
 from ast import literal_eval
 import re
 import requests
+from base64 import b64encode
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -580,20 +581,20 @@ def search_recipe():
     #print(new_list)
     if(len(new_list)>1):
         for item in new_list:
-            print(f'item is {item}')
+            #print(f'item is {item}')
             if(isinstance(item, list)):
                 for items in item:
-                    print(f'items is {items}')
+                    #print(f'items is {items}')
                     if (items is not None):
                         final_list.append(items)
                         #print(items)
                         counter.append(final_list.count(items))
             else:
-                print("esta imprimindo else line 602")
+                #print("esta imprimindo else line 602")
                 final_list=delete_dupe(new_list)
         
         #ordenando de mayor match a menor:
-        print(f'this is final list line 596 {final_list}') 
+        #print(f'this is final list line 596 {final_list}') 
         if (len(counter)>1):  
             for k in range(len(final_list)-1):
                 for x in range(len(final_list)-k-1):
@@ -611,6 +612,33 @@ def search_recipe():
     return jsonify({
             "no_dupe_id_list": final_list
         }), 200
+
+@app.route('/user/<int:position>', methods=['PATCH'])
+def update_contact_property(position):
+    body = request.get_json()
+    contact_to_update = Contact.query.get(position)
+    if contact_to_update is None:
+        raise APIException("You need to specify the contact property", status_code=400)
+    if 'name' != None:
+        new_full_name = body['name']
+        contact_to_update.name = new_full_name
+    if 'email' != None:
+        new_email = body['email']
+        contact_to_update.email = new_email
+    if 'last_name' != None:
+        new_last_name = body['last_name']
+        contact_to_update.last_name = new_last_name
+    if 'password' != None:
+        new_password = body['password']
+        salt = b64encode(os.urandom(4)).decode("utf-8")
+        new_password_hash = generate_password_hash(f"{new_password}{salt}")  
+        contact_to_update.password_hash = new_password_hash
+        contact_to_update.salt = salt
+
+    db.session.commit()
+    return "Properties updated", 200
+
+
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 8080))
