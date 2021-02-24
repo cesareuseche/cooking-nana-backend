@@ -484,7 +484,7 @@ def search_recipe():
     # ingredients_body = json.dumps(request.json["search"])
     # ingredients_body = literal_eval(ingredients_body)
     ingredients_body = body['search']
-    print(ingredients_body)
+    #print(ingredients_body)
     #print(type (ingredients_body))
     # Converting string to list 
     #ingredients_body = ingredients_body.strip('][').split(', ')
@@ -495,11 +495,11 @@ def search_recipe():
     for individual_ingredient in ingredients_body:
         individual_ingredient.lower()
         #just_ingredient = "\""+individual_ingredient+"\""
-        print(individual_ingredient)
+        #print(individual_ingredient)
         #category="a"
         #Primero obtenemos los ID de cada ingrediente
         match = db.session.query(Ingredient.id).filter_by(name=individual_ingredient).first()
-        print(f'esto sería el match con id de ingredientes {match}')
+        #print(f'esto sería el match con id de ingredientes {match}')
         if (match is None):
             match=0
         #match es del tipo sqlalchemy, de debe pasar a un entero
@@ -534,7 +534,7 @@ def search_recipe():
                 if(match2 is None):
                     match2=0
                 result_search.append(match2)
-            print(f'esto sería el resultado recipe ID {result_search} y tipo {type(result_search)}')
+            #print(f'esto sería el resultado recipe ID {result_search} y tipo {type(result_search)}')
 
     #aquí transforma la lista de objetos sqlalchemy.result a algo tangible list string
     recipes_id="".join(map(str, result_search))
@@ -549,7 +549,7 @@ def search_recipe():
     recipes_id = recipes_id.replace(',,',",")
     recipes_id = recipes_id.replace(',]',"]")
     recipes_id = recipes_id.replace('][',"],[")
-    print(recipes_id)
+    #print(recipes_id)
     if(recipes_id[-1]==","):
           recipes_id = recipes_id.rstrip(recipes_id[-1])
     if(recipes_id[-1]==","):
@@ -558,7 +558,7 @@ def search_recipe():
 
     #eliminación de duplicados
     def delete_dupe(list_here):
-        print('aplicando la eliminación de duplicados')
+        #print('aplicando la eliminación de duplicados')
         result=[]
         for item in list_here:
             if item not in result:
@@ -566,7 +566,7 @@ def search_recipe():
         return result
     
     if (isinstance(recipes_id_list, list)==False):
-        print('es lista')
+        #print('es lista')
         recipes_id_list = delete_dupe(recipes_id_list)
         new_list=[]    
         for items in recipes_id_list:
@@ -577,25 +577,39 @@ def search_recipe():
 
     final_list=[]
     counter=[]
-    for item in new_list:
-        for items in item:
-            if (items is not None):
-                final_list.append(items)
-                counter.append(final_list.count(items))
+    #print(new_list)
+    if(len(new_list)>1):
+        for item in new_list:
+            print(f'item is {item}')
+            if(isinstance(item, list)):
+                for items in item:
+                    print(f'items is {items}')
+                    if (items is not None):
+                        final_list.append(items)
+                        #print(items)
+                        counter.append(final_list.count(items))
+            else:
+                print("esta imprimindo else line 602")
+                final_list=delete_dupe(new_list)
+        
+        #ordenando de mayor match a menor:
+        print(f'this is final list line 596 {final_list}') 
+        if (len(counter)>1):  
+            for k in range(len(final_list)-1):
+                for x in range(len(final_list)-k-1):
+                    if counter[x]<counter[x+1]:
+                        aux1=counter[x]
+                        counter[x]=counter[x+1]
+                        counter[x+1]=aux1
+                        aux2=final_list[x]
+                        final_list[x]=final_list[x+1]
+                        final_list[x+1]=aux2
+        delete_dupe(final_list)
+        print(final_list)
+    
 
-    for k in range(len(final_list)-1):
-        for x in range(len(final_list)-k-1):
-            if counter[x]<counter[x+1]:
-                aux1=counter[x]
-                counter[x]=counter[x+1]
-                counter[x+1]=aux1
-                aux2=final_list[x]
-                final_list[x]=final_list[x+1]
-                final_list[x+1]=aux2
-
-    print(final_list)
     return jsonify({
-            "no_dupe_id_list": delete_dupe(final_list)
+            "no_dupe_id_list": final_list
         }), 200
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

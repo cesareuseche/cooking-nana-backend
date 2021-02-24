@@ -83,9 +83,9 @@ class Contact(db.Model):
 
 class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.String(1000), unique=False, nullable=False)
+    description = db.Column(db.String(5000), unique=False, nullable=False)
     name = db.Column(db.String(120), unique=True, nullable=False)
-    instructions = db.Column(db.String(1000), unique=False, nullable=False)
+    instructions = db.Column(db.String(8000), unique=False, nullable=False)
     tags = db.Column(db.String(250), nullable=False)
     likes = db.Column(db.Integer, nullable=True)
     score = db.Column(db.Integer, nullable=True)
