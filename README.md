@@ -157,6 +157,18 @@ $ git push heroku master
 
     This is a GET endpoint, you will need enter the user id to obtain data
 
+    When this endpoint is used with PATCH method, you can change user data as password, etc.
+    Just enter the following info:
+
+    {
+  	"email":"email@example.com",
+  	"password":"12345",
+  	"name":"new Name",
+  	"last_name":"new Last Name"
+    }
+    
+    Note: This PATCH method needs a re-work for security reasons.
+
 ### /login
     You need copy to your .env file the APP_JWT_SECRET LINE (with versión jwt extended, use this lib: create_access_token)
 
@@ -276,6 +288,9 @@ $ git push heroku master
     }
 
     After that, you can use /recipes/<int:position> endpoint to obtain the specific recipe
+
+
+
 ## Other
 
 ### Script to populate database automatically for test (DATABASE MUST BE EMPTY)
