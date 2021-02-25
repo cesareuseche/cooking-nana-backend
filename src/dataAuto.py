@@ -38,12 +38,12 @@ description = [
 ]
 
 ingredients = [
-    ["pasta","cheese","olive oil","chili pepper","tomatoes","garlic","black pepper","salt","basil"],
+    ["pasta","cheese","olive oil","chili pepper","tomato","garlic","black pepper","salt","basil"],
     ["Sausage","Potato","Broccoli","onion","pepper","olive oil","Sprinkle of mixed herbs"],
-    ["onion","beef","tomatoes","herbs","lasagne","cheese","salad","white sauce","butter","plain flour","milk"],
-    ["Raising flour","milk","olive oil","tomatoes","herbs","cheese"],
-    ["peas","chilli","tomatoes","chicken","mushrooms"],
-    ["olive oil", "tomatoes","garlic","vegetable","herbs","pasta","cheese"],
+    ["onion","beef","tomato","herbs","lasagne","cheese","salad","white sauce","butter","plain flour","milk"],
+    ["Raising flour","milk","olive oil","tomato","herbs","cheese"],
+    ["peas","chilli","tomato","chicken","mushrooms"],
+    ["olive oil", "tomato","garlic","vegetable","herbs","pasta","cheese"],
     ["potatoes","olive oil","onions","bacon","butter"],
     ["beans","onion","flour tortillas","salsa","cheese"],
     ["cornstarch", "water","chicken broth","soy sauce","fish sauce","rice vinegar","chile-garlic sauce","vegetable oil","minced frechs ginger root","garlic","ground coriander","rice noodles","zucchini","red bell pepper","chicken breast", "peanuts","cilantro"]
