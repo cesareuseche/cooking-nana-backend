@@ -335,7 +335,7 @@ def post_recipe():
         #recipe.append(new_recipe_id)
         category="a"
         match = db.session.query(Ingredient.name).filter_by(name=individual_ingredient).first()
-        print(f'esto sería el match {match} y el ingredient {individual_ingredient}')
+        #print(f'esto sería el match {match} y el ingredient {individual_ingredient}')
         ######
         just_ingredient = individual_ingredient.replace('\'',"\"")
         new_ingredient = Ingredient.register(
@@ -355,18 +355,18 @@ def post_recipe():
 
     #print(type (ingredients_body))
     for individual_ingredient in ingredients_body:
-        print(type (individual_ingredient))
-        print(individual_ingredient)
+        #print(type (individual_ingredient))
+        #print(individual_ingredient)
         just_ingredient = individual_ingredient.replace('\'',"\"")
         #Para obtener el id del ingrediente si el nombre del mismo aparece en el body    
         match = db.session.query(Ingredient.id).filter_by(name=just_ingredient).first()
-        print(f'esto sería el match {match}')
-        print(type(match))
+        #print(f'esto sería el match {match}')
+        #print(type(match))
         obtained_ingredients_id.append(match)
         #con el ejemplo los ID obtenidos vienen como listas, pero siguiente formato [(1,),(2,)], hay que arregarlo
 
-    print(f'esta sería obtained_id {obtained_ingredients_id}')
-    print(type(obtained_ingredients_id))
+    #print(f'esta sería obtained_id {obtained_ingredients_id}')
+    #print(type(obtained_ingredients_id))
     string_ingredient_id="".join(map(str, obtained_ingredients_id))
     #print(f'esta sería como cadena{string_ingredient_id}')
     string_ingredient_id = string_ingredient_id.strip('()')
@@ -376,12 +376,12 @@ def post_recipe():
         string_ingredient_id=string_ingredient_id.rstrip(string_ingredient_id[-1])
     #print(f'esta sería como cadena recortada {string_ingredient_id}') ##en este punto los id quedan: 1,2
     string_ingredient_id="["+string_ingredient_id+"]"
-    print(f'esta sería como cadena string {string_ingredient_id}') ##en este punto los id quedan [1,2] pero strings
+    #print(f'esta sería como cadena string {string_ingredient_id}') ##en este punto los id quedan [1,2] pero strings
     #string_ingredient_id = list(map(int, string_ingredient_id))
-    print(f'línea 378 {string_ingredient_id}')
+    #print(f'línea 378 {string_ingredient_id}')
     string_ingredient_id=literal_eval(str(string_ingredient_id))
-    print(f'esta sería como lista enteros {string_ingredient_id}') ##en este punto devuelve como lista de enteros
-    print(type(string_ingredient_id))
+    #print(f'esta sería como lista enteros {string_ingredient_id}') ##en este punto devuelve como lista de enteros
+    #print(type(string_ingredient_id))
     #print(body["ingredients"])        
     body["ingredients"] = string_ingredient_id     ####hasta aquí está bien, devolvió lista id de onion y potato
  
@@ -410,8 +410,8 @@ def post_recipe():
     ##Ya teniendo el ID del nuevo recipe a crear y la lista de ID de ingredientes, es hora de registrar en
     ## la tabla de clase relaciona Recipeingredients
     integer_ingredient_id=string_ingredient_id # it's a List
-    print(f'This is integer_ingredient_id {integer_ingredient_id} and type:')
-    print(type(integer_ingredient_id))
+    #print(f'This is integer_ingredient_id {integer_ingredient_id} and type:')
+    #print(type(integer_ingredient_id))
    
     empty_list=[]
     ##Registro del nuevo Recipe
