@@ -71,7 +71,7 @@ $ pipenv run start (to start the flask webserver)
 
 1. ⚠️ If you don't have docker installed on your computer, please go [get docker](https://docs.docker.com/get-docker/)
 2. ⚠️ If on linux, install docker-compose following [these instructions](https://docs.docker.com/compose/install/)
-3. Clone the repo and create a `.env` file; complete key-value pairs as proposed on `.env.example` file
+3. Clone the repo and create a `.env` file; complete key-value pairs as proposed on `.env.DockerExample` file
 4. Run `docker-compose up` and give it a few minutes
 5. Have some coffee (Really large coffee)
 5.1 Delete Migration
@@ -119,7 +119,7 @@ $ git push heroku master
 
 ### Edit tables
 
-    Enter in mySQL with: mysql -h localhost -u your_user
+    Enter in mySQL with: `mysql -h localhost -u your_user`
 
     drop database contact;
     create database contact;    (remember pipenv run migrate and pipenv run upgrade after create)
@@ -281,14 +281,12 @@ $ git push heroku master
     if everything is correct, you will get:
 
     {
-    "response": [
-                    [1,2,3],
-                    [4]
-                ]
+    "response": [1,2,3]
     }
 
     After that, you can use /recipes/<int:position> endpoint to obtain the specific recipe
 
+    Note: this response have Recipes ID and is ordered by counts of match of all ingredients between recipes. More coincidences of intgredients means to be at first places in list.
 
 
 ## Other
